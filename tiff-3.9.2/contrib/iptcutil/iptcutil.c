@@ -5,8 +5,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <memory.h>
 #include <ctype.h>
+
+#ifdef HAVE_MEMORY_H
+# include <memory.h>
+#endif
 
 #ifdef HAVE_STRINGS_H
 # include <strings.h>
