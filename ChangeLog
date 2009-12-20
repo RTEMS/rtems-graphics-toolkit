@@ -1,0 +1,6 @@
+2009-12-19	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* .cvsignore, Makefile.settings, do_it: New files.
+	Can now build with do_it.  Crude but works.
+
+
