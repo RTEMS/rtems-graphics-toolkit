@@ -1,0 +1,19 @@
+#
+# $Id$
+#
+
+This is the RTEMS Graphics Toolkit.  
+
+The packages jpeg-7 and tiff-3.9.2 appear to build correctly if
+configured like this:
+
+CFLAGS="-mcpu=cypress" ./configure --host=sparc-rtems4.10 --prefix=/tmp/jpg
+make
+make install
+
+The CFLAGS and target should be automatically gathered from the
+install Makefile information.
+
+Both packages install programs in addition to the libraries we really
+want.  We need to disable those.
+
