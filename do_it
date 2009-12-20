@@ -43,8 +43,12 @@ echo WARNING USING ${PREFIX} for install point!!!
 do_step()
 {
   case $1 in
+    rmlogs)
+      rm -f */build.log */c.log */clean.log */distclean.log */install.log
+      ;;
     configure)
       echo "configuring jpeg-7 ..."
+      cd jpeg-7
       CFLAGS="${CPU_CFLAGS}" \
          ./configure --host=${TARGET} --prefix=${PREFIX} \
          --disable-shared \
