@@ -1,3 +1,10 @@
+2009-12-19	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* contrib/tags/Makefile.am, contrib/tags/Makefile.in,
+	contrib/tags/README, contrib/tags/listtif.c, contrib/tags/maketif.c,
+	contrib/tags/xtif_dir.c, contrib/tags/xtiffio.h,
+	contrib/tags/xtiffiop.h: New files. Missed in initial import.
+
 2009-11-04  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
 	* libtiff 3.9.2 released.
