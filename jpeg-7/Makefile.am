@@ -25,8 +25,10 @@ INSTINCLUDES  = jerror.h jmorecfg.h jpeglib.h
 OTHERINCLUDES = cderror.h cdjpeg.h jdct.h jinclude.h jmemsys.h jpegint.h \
         jversion.h transupp.h
 
+if BUILD_PROGRAMS
 # Manual pages (Automake uses 'MANS' for itself)
 DISTMANS= cjpeg.1 djpeg.1 jpegtran.1 rdjpgcom.1 wrjpgcom.1
+endif
 
 # Other documentation files
 DOCS= README install.txt usage.txt wizard.txt example.c libjpeg.txt \
@@ -74,8 +76,10 @@ if HAVE_LD_VERSION_SCRIPT
   libjpeg_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libjpeg.map
 endif
 
+if BUILD_PROGRAMS
 # Executables to build
 bin_PROGRAMS = cjpeg djpeg jpegtran rdjpgcom wrjpgcom
+endif
 
 # Executable sources & libs
 cjpeg_SOURCES    = cjpeg.c rdppm.c rdgif.c rdtarga.c rdrle.c rdbmp.c \

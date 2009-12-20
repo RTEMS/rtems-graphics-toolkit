@@ -39,50 +39,60 @@ PREFIX=/tmp/joel
 
 echo WARNING USING ${PREFIX} for install point!!!
 
-case $1 in
-  configure)
-    cd jpeg-7
-    check_status $? Could not cd to jpeg-7
+do_step()
+{
+  case $1 in
+    configure)
+      cd jpeg-7
+      check_status $? Could not cd to jpeg-7
 
-    echo "configuring jpeg-7 ..."
-    CFLAGS="${CPU_CFLAGS}" ./configure --build=${TARGET} --prefix=${PREFIX} \
-       >c.log 2>&1
-    check_status $? Could not configure jpeg-7
+      echo "configuring jpeg-7 ..."
+      CFLAGS="${CPU_CFLAGS}" ./configure --build=${TARGET} --prefix=${PREFIX} \
+         --disable-programs \
+         >c.log 2>&1
+      check_status $? Could not configure jpeg-7
 
-    cd ../tiff-3.9.2
-    check_status $? Could not cd to tiff-3.9.2
+      cd ../tiff-3.9.2
+      check_status $? Could not cd to tiff-3.9.2
 
-    echo "configuring tiff-3.9.2 ..."
-    CFLAGS="${CPU_CFLAGS}" ./configure --build=${TARGET} --prefix=${PREFIX} \
-       >c.log 2>&1
-    check_status $? Could not configure tiff-3.9.2
+      echo "configuring tiff-3.9.2 ..."
+      CFLAGS="${CPU_CFLAGS}" ./configure --build=${TARGET} --prefix=${PREFIX} \
+         >c.log 2>&1
+      check_status $? Could not configure tiff-3.9.2
 
-    cd ..
-    ;;
-  build|clean|distclean|install)
-    action=${1}
-    if [ ${1} = build ] ; then
-      action=
-    fi
-
-    for d in jpeg-7 tiff-3.9.2
-    do
-      echo "Performing ${1} on ${d} ..."
-
-      cd ${d}
-      check_status $? Could not cd to ${d}
-      make ${action} >${1}.log 2>&1
-      check_status $? Could not ${1} in ${d}
-
-      #if [ ${1} = distclean ] ; then
-      #  rm -f build.log c.log clean.log distclean.log
-      #fi
       cd ..
-    done
-    ;;
-  *)
-    check_status 1 Unknown action ${1}
-    ;;
-esac
+      ;;
+    build|clean|distclean|install)
+      action=${1}
+      if [ ${1} = build ] ; then
+        action=
+      fi
+
+      for d in jpeg-7 tiff-3.9.2
+      do
+        echo "Performing ${1} on ${d} ..."
+
+        cd ${d}
+        check_status $? Could not cd to ${d}
+        make ${action} >${1}.log 2>&1
+        check_status $? Could not ${1} in ${d}
+
+        #if [ ${1} = distclean ] ; then
+        #  rm -f build.log c.log clean.log distclean.log
+        #fi
+        cd ..
+      done
+      ;;
+    *)
+      check_status 1 Unknown action ${1}
+      ;;
+  esac
+}
+
+for a in $*
+do
+  do_step ${a}
+done
+
 
 exit 0

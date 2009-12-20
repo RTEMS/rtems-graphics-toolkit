@@ -1,5 +1,13 @@
 2009-12-19	Joel Sherrill <joel.sherrill@oarcorp.com>
 
+	* do_it: Add support for doing multiple actions.
+	Add --disable-programs option on jpeg-7 configure command.
+	* jpeg-7/Makefile.am, jpeg-7/Makefile.in, jpeg-7/aclocal.m4,
+	jpeg-7/configure, jpeg-7/configure.ac: Add --disable-programs
+	option support since we only want libraries.
+
+2009-12-19	Joel Sherrill <joel.sherrill@oarcorp.com>
+
 	* .cvsignore, Makefile.settings, do_it: New files.
 	Can now build with do_it.  Crude but works.
 
