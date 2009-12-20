@@ -2,6 +2,7 @@
 # $Id$
 #
 
-libjpeg - (v7)     http://www.ijg.org/
-libtiff - (v3.6.2) http://www.libtiff.org/
-libpng  - (1.2.42) http://www.libpng.org/pub/png/libpng.html
+libjpeg      - (v7)     http://www.ijg.org/
+libtiff      - (v3.6.2) http://www.libtiff.org/
+libpng       - (1.2.42) http://www.libpng.org/pub/png/libpng.html
+libfreetype  - (2.3.11) http://freetype.sourceforge.net/index2.html

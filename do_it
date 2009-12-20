@@ -44,9 +44,6 @@ do_step()
 {
   case $1 in
     configure)
-      cd jpeg-7
-      check_status $? Could not cd to jpeg-7
-
       echo "configuring jpeg-7 ..."
       CFLAGS="${CPU_CFLAGS}" \
          ./configure --host=${TARGET} --prefix=${PREFIX} \
@@ -74,6 +71,15 @@ do_step()
          >c.log 2>&1
       check_status $? Could not configure libpng-1.2.41
 
+      cd ../freetype-2.3.11
+      echo "configuring freetype-2.3.11 ..."
+      # include BSP_CFLAGS so it sees libz
+      CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
+         ./configure --host=${TARGET} --prefix=${PREFIX} \
+         --disable-shared \
+         >c.log 2>&1
+      check_status $? Could not configure freetype-2.3.11
+
       cd ..
       ;;
     build|clean|distclean|install)
@@ -82,7 +88,7 @@ do_step()
         action=
       fi
 
-      for d in jpeg-7 tiff-3.9.2 libpng-1.2.41
+      for d in jpeg-7 tiff-3.9.2 libpng-1.2.41 freetype-2.3.11
       do
         echo "Performing ${1} on ${d} ..."
 

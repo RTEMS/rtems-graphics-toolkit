@@ -1,5 +1,9 @@
 2009-12-19	Joel Sherrill <joel.sherrill@oarcorp.com>
 
+	* ORIGIN, do_it: Add support for freetype 2.3.11.
+
+2009-12-19	Joel Sherrill <joel.sherrill@oarcorp.com>
+
 	* ChangeLog, Makefile.settings, README, do_it: libpng now builds.
 	* TODO: New file.
 
