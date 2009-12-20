@@ -17,3 +17,11 @@ install Makefile information.
 Both packages install programs in addition to the libraries we really
 want.  We need to disable those.
 
+NOTE: The install point (--prefix) is set so that the contents are 
+      installed with the BSP and the CFLAGS are set for the BSP.
+
+RTEMS_MAKEFILE_PATH=XXX \
+  ./doit configure build install distclean
+
+NOTE: Build procedure subject to change. :)
+

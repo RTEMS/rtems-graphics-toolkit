@@ -30,12 +30,13 @@ if [ X${RTEMS_MAKEFILE_PATH} = X ] ; then
   exit 1
 fi
 
-make -f Makefile.settings
+echo "Generating RTEMS_SETTINGS file..."
+make -f Makefile.settings clean all
 check_status $? Could not generate RTEMS_SETTINGS
 
 source ./RTEMS_SETTINGS
 
-PREFIX=/tmp/joel
+PREFIX=${BSPTOP}
 
 echo WARNING USING ${PREFIX} for install point!!!
 
@@ -47,7 +48,9 @@ do_step()
       check_status $? Could not cd to jpeg-7
 
       echo "configuring jpeg-7 ..."
-      CFLAGS="${CPU_CFLAGS}" ./configure --build=${TARGET} --prefix=${PREFIX} \
+      CFLAGS="${CPU_CFLAGS}" \
+         ./configure --host=${TARGET} --prefix=${PREFIX} \
+         --disable-shared \
          --disable-programs \
          >c.log 2>&1
       check_status $? Could not configure jpeg-7
@@ -56,9 +59,20 @@ do_step()
       check_status $? Could not cd to tiff-3.9.2
 
       echo "configuring tiff-3.9.2 ..."
-      CFLAGS="${CPU_CFLAGS}" ./configure --build=${TARGET} --prefix=${PREFIX} \
+      CFLAGS="${CPU_CFLAGS}" \
+         ./configure --host=${TARGET} --prefix=${PREFIX} \
+         --disable-shared \
          >c.log 2>&1
       check_status $? Could not configure tiff-3.9.2
+
+      cd ../libpng-1.2.41
+      echo "configuring libpng-1.2.41 ..."
+      # include BSP_CFLAGS so it sees libz
+      CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
+         ./configure --host=${TARGET} --prefix=${PREFIX} \
+         --disable-shared \
+         >c.log 2>&1
+      check_status $? Could not configure libpng-1.2.41
 
       cd ..
       ;;
@@ -68,7 +82,7 @@ do_step()
         action=
       fi
 
-      for d in jpeg-7 tiff-3.9.2
+      for d in jpeg-7 tiff-3.9.2 libpng-1.2.41
       do
         echo "Performing ${1} on ${d} ..."
 
@@ -93,6 +107,5 @@ for a in $*
 do
   do_step ${a}
 done
-
 
 exit 0

@@ -1,0 +1,9 @@
+#
+#  $Id$
+#
+
++ Disable building programs (e.g. only build libraries)
+
++ Add font libraries
+
++ Add microwin

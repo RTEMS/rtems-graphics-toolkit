@@ -1,5 +1,35 @@
 2009-12-19	Joel Sherrill <joel.sherrill@oarcorp.com>
 
+	* ChangeLog, Makefile.settings, README, do_it: libpng now builds.
+	* TODO: New file.
+
+2009-12-19	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* tiff-3.9.2/configure.ac: Add memory.h to AC_CHECK_HEADERS.
+	* tiff-3.9.2/contrib/iptcutil/iptcutil.c: Conditional include of
+	memory.h.
+	* tiff-3.9.2/Makefile.in, tiff-3.9.2/aclocal.m4, tiff-3.9.2/configure,
+	* tiff-3.9.2/build/Makefile.in,
+	tiff-3.9.2/contrib/Makefile.in, tiff-3.9.2/contrib/acorn/Makefile.in,
+	tiff-3.9.2/contrib/addtiffo/Makefile.in,
+	tiff-3.9.2/contrib/dbs/Makefile.in,
+	tiff-3.9.2/contrib/dbs/xtiff/Makefile.in,
+	tiff-3.9.2/contrib/iptcutil/Makefile.in,
+	tiff-3.9.2/contrib/mac-cw/Makefile.in,
+	tiff-3.9.2/contrib/mac-mpw/Makefile.in,
+	tiff-3.9.2/contrib/mfs/Makefile.in,
+	tiff-3.9.2/contrib/pds/Makefile.in,
+	tiff-3.9.2/contrib/ras/Makefile.in,
+	tiff-3.9.2/contrib/stream/Makefile.in,
+	tiff-3.9.2/contrib/tags/Makefile.in,
+	tiff-3.9.2/contrib/win_dib/Makefile.in, tiff-3.9.2/html/Makefile.in,
+	tiff-3.9.2/html/images/Makefile.in, tiff-3.9.2/html/man/Makefile.in,
+	tiff-3.9.2/libtiff/Makefile.in, tiff-3.9.2/man/Makefile.in,
+	tiff-3.9.2/port/Makefile.in, tiff-3.9.2/test/Makefile.in,
+	tiff-3.9.2/tools/Makefile.in: Regenerate.
+
+2009-12-19	Joel Sherrill <joel.sherrill@oarcorp.com>
+
 	Initial import of libpng-1.2.41.
 	* ORIGIN: Added libpng-1.2.41 source.
 	* libpng-1.2.41/ANNOUNCE, libpng-1.2.41/CHANGES,

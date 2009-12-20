@@ -14,9 +14,13 @@ CARGS += $(CPU_CFLAGS) $(LDFLAGS) $(AM_LDFLAGS)
 all: RTEMS_SETTINGS
 
 RTEMS_SETTINGS: 
-	(echo "CC=\"$(CC)\""; \
+	(echo "BSP=$(RTEMS_BSP)"; \
+	 echo "BSPTOP=$(exec_prefix)/$(RTEMS_BSP)"; \
+	 echo "PREFIX=$(prefix)"; \
+	 echo "CC=\"$(CC)\""; \
 	 echo "AS=$(AS)"; \
 	 echo "TARGET=$(AS:%-as=%)" ; \
+	 echo "BSP_CFLAGS=\"$(shell echo $(CC) | sed -e s/^.*gcc//)\""; \
 	 echo "CPU_CFLAGS=\"$(CPU_CFLAGS)\""; \
 	 echo "CFLAGS=\"$(CFLAGS)\"" ; \
 	 echo "LDFLAGS=\"$(LDFLAGS)\"" ; \
