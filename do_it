@@ -51,6 +51,7 @@ do_step()
       cd jpeg-7
       CFLAGS="${CPU_CFLAGS}" \
          ./configure --host=${TARGET} --prefix=${PREFIX} \
+         --includedir=${PREFIX}/lib/include \
          --disable-shared \
          --disable-programs \
          >c.log 2>&1
@@ -62,6 +63,7 @@ do_step()
       echo "configuring tiff-3.9.2 ..."
       CFLAGS="${CPU_CFLAGS}" \
          ./configure --host=${TARGET} --prefix=${PREFIX} \
+         --includedir=${PREFIX}/lib/include \
          --disable-shared \
          >c.log 2>&1
       check_status $? Could not configure tiff-3.9.2
@@ -71,6 +73,7 @@ do_step()
       # include BSP_CFLAGS so it sees libz
       CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
          ./configure --host=${TARGET} --prefix=${PREFIX} \
+         --includedir=${PREFIX}/lib/include \
          --disable-shared \
          >c.log 2>&1
       check_status $? Could not configure libpng-1.2.41
@@ -80,6 +83,7 @@ do_step()
       # include BSP_CFLAGS so it sees libz
       CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
          ./configure --host=${TARGET} --prefix=${PREFIX} \
+         --includedir=${PREFIX}/lib/include \
          --disable-shared \
          >c.log 2>&1
       check_status $? Could not configure freetype-2.3.11
@@ -99,13 +103,27 @@ do_step()
         cd ${d}
         check_status $? Could not cd to ${d}
         make ${action} >${1}.log 2>&1
-        check_status $? Could not ${1} in ${d}
 
+        if [ ${1} != distclean ] ; then
+          check_status $? Could not ${1} in ${d}
+        fi
         #if [ ${1} = distclean ] ; then
         #  rm -f build.log c.log clean.log distclean.log
         #fi
         cd ..
       done
+
+      echo "Performing ${1} on rtems-nano-x ..."
+      case $1 in
+        build|clean|install)
+          #cd rtems-nano-x
+          #make -C microwin/src -f Makefile.rtems ${action}
+          #check_status $? Could not ${1} in rtems-nano-x
+          #cd ..
+          ;;
+        *)
+          ;;
+      esac
       ;;
     *)
       check_status 1 Unknown action ${1}
