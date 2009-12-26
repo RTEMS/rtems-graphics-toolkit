@@ -1,5 +1,12 @@
 2009-12-26	Joel Sherrill <joel.sherrill@oarcorp.com>
 
+	* t1lib-5.1.2/configure, t1lib-5.1.2/configure.in,
+	t1lib-5.1.2/lib/t1lib/t1lib.h: When cross compiling you cannot
+	execute autoconf probes. So hard code the 64-bit integer type for
+	RTEMS.
+
+2009-12-26	Joel Sherrill <joel.sherrill@oarcorp.com>
+
 	* t1lib-5.1.2/Changes, t1lib-5.1.2/LGPL, t1lib-5.1.2/LICENSE,
 	t1lib-5.1.2/Makefile.in, t1lib-5.1.2/README.t1lib-5.1.2,
 	t1lib-5.1.2/README.t1python, t1lib-5.1.2/README.win32,

@@ -45,8 +45,8 @@ extern "C" {
 #define T1LIB_VERSIONSTRING      "5.1.2"
 
 /* Data Type information filled in by configure. */
-typedef short T1_int16;
-typedef int T1_int32;
+typedef int T1_int16;
+typedef long T1_int32;
 
 /* the data structure which contains the character bitmap description */
 typedef struct

@@ -225,19 +225,26 @@ fi
 
 dnl **** Check which ANSI integer type is 64 bit 
 
-AC_CACHE_CHECK( "which ANSI integer type is 64 bit", ac_64bit_type,
-		AC_TRY_RUN([
-int main(void) {
-  if (sizeof(long)==8)
-    return(0);
-  else
-    return(1);
-}], ac_64bit_type="long", ac_64bit_type="<none>"))
-if test "$ac_64bit_type" = "long"
-then
-  T1_AA_TYPE64="-DT1_AA_TYPE64=long"
+if test "$cross_compiling" = yes; then
+  case ${host} in
+     *-rtems*) T1_AA_TYPE64="-DT1_AA_TYPE64=\"long long\"" ;;
+     *) AC_MSG_ERROR( "Cross compiling and unknown target" );;
+  esac
 else
-  T1_AA_TYPE64=
+  AC_CACHE_CHECK( "which ANSI integer type is 64 bit", ac_64bit_type,
+		  AC_TRY_RUN([
+  int main(void) {
+    if (sizeof(long)==8)
+      return(0);
+    else
+      return(1);
+  }], ac_64bit_type="long", ac_64bit_type="<none>"))
+  if test "$ac_64bit_type" = "long"
+  then
+    T1_AA_TYPE64="-DT1_AA_TYPE64=long"
+  else
+    T1_AA_TYPE64=
+  fi
 fi
 
 
