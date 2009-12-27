@@ -1,3 +1,7 @@
+2009-12-27	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* do_it: Add building t1lib-5.1.2.
+
 2009-12-26	Joel Sherrill <joel.sherrill@oarcorp.com>
 
 	* t1lib-5.1.2/configure, t1lib-5.1.2/configure.in,

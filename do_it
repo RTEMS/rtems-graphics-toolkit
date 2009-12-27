@@ -88,6 +88,18 @@ do_step()
          >c.log 2>&1
       check_status $? Could not configure freetype-2.3.11
 
+      cd ../t1lib-5.1.2
+      echo "configuring t1lib-5.1.2 ..."
+      # include BSP_CFLAGS so it sees libz
+      CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
+         ./configure --host=${TARGET} --prefix=${PREFIX} \
+         --includedir=${PREFIX}/lib/include \
+         --datadir=${PREFIX}/share \
+         --disable-shared \
+         --without-athena --without-x \
+         >c.log 2>&1
+      check_status $? Could not configure t1lib-5.1.2
+
       cd ..
       ;;
     build|clean|distclean|install)
@@ -96,7 +108,7 @@ do_step()
         action=
       fi
 
-      for d in jpeg-7 tiff-3.9.2 libpng-1.2.41 freetype-2.3.11
+      for d in jpeg-7 tiff-3.9.2 libpng-1.2.41 freetype-2.3.11 t1lib-5.1.2
       do
         echo "Performing ${1} on ${d} ..."
 
