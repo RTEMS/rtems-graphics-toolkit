@@ -1,5 +1,10 @@
 2010-01-08	Joel Sherrill <joel.sherrill@oarcorp.com>
 
+	* do_it: Detect BSP and be able to turn on/off specific features.
+	Also print help even if RTEMS_MAKEFILE_PATH not set.
+
+2010-01-08	Joel Sherrill <joel.sherrill@oarcorp.com>
+
 	* do_it: Complete rewrite.
 	* VERSIONS: New file.
 

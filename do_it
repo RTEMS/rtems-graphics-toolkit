@@ -13,11 +13,6 @@ if [ ! -r ${vfile} ] ; then
   exit 1
 fi
 
-if [ X${RTEMS_MAKEFILE_PATH} = X ] ; then
-  echo RTEMS_MAKEFILE_PATH not set
-  exit 1
-fi
-
 source ${vfile}
 
 if [ X${LIBJPEG} = X ] ; then
@@ -58,6 +53,7 @@ do_one [options] CPU BSP
 NOTES:
   + Use of each option toggles the setting.  For example, \"-v -v -A -1\"
     results in verbose=no and all steps done except Type 1 fonts.
+  + RTEMS_MAKEFILE_PATH must be set
 EOF
 }
 
@@ -105,23 +101,8 @@ do
     esac
 done
 
-########################### Grab CPU/BSP ###########################
-
 shiftcount=`expr $OPTIND - 1`
 shift $shiftcount
-
-cpu=${1}
-bsp=${2}
-
-case ${cpu} in
-  m32c)
-    do_ada=no
-    do_cxx=no
-    run_acats=no
-    echo M32C does not support C++ or Ada
-    ;;
-  *);;
-esac
 
 if [ ${verbose} = yes ] ; then
   echo "JPEG Library                : " ${LIBJPEG}
@@ -136,6 +117,13 @@ if [ ${verbose} = yes ] ; then
   echo "Adobe Type 1 Font Library   : " ${T1LIB}
   echo "JPEG Library                : " ${do_t1}
   echo "Clean after instal          : " ${do_clean}
+fi
+
+######### START OF Consistency checks
+
+if [ X${RTEMS_MAKEFILE_PATH} = X ] ; then
+  echo RTEMS_MAKEFILE_PATH not set
+  exit 1
 fi
 
 test -d ${LIBJPEG}
@@ -166,6 +154,10 @@ if [ ${verbose} = yes ] ; then
   echo "USING ${PREFIX} for install point!!!"
 fi
 
+case ${BSP} in
+  pc386) ;; # can be used to turn on detect svgalib supportable on this BSP
+  *)
+esac
 
 ######### Log Directory
 LOGDIR=${BASEDIR}/log
