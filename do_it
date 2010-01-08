@@ -1,34 +1,158 @@
-#! /bin/sh
+#! /bin/sh 
+#
+#  Script to help build RTEMS Graphics Toolkit
 #
 #  $Id$
 #
 
-test_exit()
-{
-  exit_code=$1
-  exit $exit_code
-}
+BASEDIR=`dirname $0`
 
-progname=${0##*/}        # fast basename hack for ksh, bash
-
-USAGE=\
-"usage: $progname [ -opts ] test [ test ... ]
-"
-
-check_status()
-{
-  if [ $1 -ne 0 ] ; then
-    shift 
-    echo "FAILED: " "$*" >&2
-    exit 1
-  fi
-}
-
+vfile=`dirname $0`/VERSIONS
+if [ ! -r ${vfile} ] ; then
+  echo VERSIONS file not found
+  exit 1
+fi
 
 if [ X${RTEMS_MAKEFILE_PATH} = X ] ; then
   echo RTEMS_MAKEFILE_PATH not set
   exit 1
 fi
+
+source ${vfile}
+
+if [ X${LIBJPEG} = X ] ; then
+  echo VERSION FILE NOT CORRECT
+  exit 1
+fi
+
+######################## Set defaults #############################
+# Do we clean after build and install
+do_clean="no"
+# Do we build jpeg support?
+do_jpeg="no"
+# Do we build png support?
+do_png="no"
+# Do we build tiff support?
+do_tiff="no"
+# Do we build Adobe Type 1 Font support?
+do_t1="no"
+# Do we build Truetype Font support?
+do_ttf="no"
+# Are we noisy when running?
+verbose="no"
+######################## Parse arguments ###########################
+
+usage()
+{
+cat <<EOF
+do_one [options] CPU BSP
+  -A - build and install all libraries
+  -j - build JPEG support (default=no)
+  -p - build PNG support (default=no)
+  -t - build TIFF support (default=no)
+  -1 - build Adobe Type 1 font support (default=no)
+  -T - build Truetype font support (default=no)
+  -c - clean after building (default=no)
+  -v - verbose
+
+NOTES:
+  + Use of each option toggles the setting.  For example, \"-v -v -A -1\"
+    results in verbose=no and all steps done except Type 1 fonts.
+EOF
+}
+
+fatal()
+{
+  usage
+  exit 1
+}
+
+check_status()
+{
+  if [ $1 -ne 0 ] ; then
+    shift
+    echo "ERROR: $*" >&2
+    exit 1
+  fi
+}
+
+toggle()
+{
+  case $1 in
+    no)  echo "yes" ;;
+    yes) echo "no" ;;
+    *)   fatal "Unknown value to toggle ($1)" ;;
+  esac
+}
+
+while getopts Ajpt1Tv OPT
+do
+    case "$OPT" in
+      A) do_jpeg="yes"
+         do_png="yes"
+         do_tiff="yes"
+         do_t1="yes"
+         do_ttf="yes"
+         ;;
+      j) do_jpeg=`toggle ${do_jpeg}` ;;
+      p) do_png=`toggle ${do_png}` ;;
+      t) do_tiff=`toggle ${do_tiff}` ;;
+      1) do_t1=`toggle ${do_t1}` ;;
+      T) do_ttf=`toggle ${do_ttf}` ;;
+      c) do_clean=`toggle ${do_clean}` ;;
+      v) verbose=`toggle ${verbose}` ;;
+      *) fatal;;
+    esac
+done
+
+########################### Grab CPU/BSP ###########################
+
+shiftcount=`expr $OPTIND - 1`
+shift $shiftcount
+
+cpu=${1}
+bsp=${2}
+
+case ${cpu} in
+  m32c)
+    do_ada=no
+    do_cxx=no
+    run_acats=no
+    echo M32C does not support C++ or Ada
+    ;;
+  *);;
+esac
+
+if [ ${verbose} = yes ] ; then
+  echo "JPEG Library                : " ${LIBJPEG}
+  echo "Build JPEG Library          : " ${do_jpeg}
+  echo "PNG Library                 : " ${LIBPNG}
+  echo "Build PNG Library           : " ${do_png}
+  echo "TIFF Library                : " ${TIFFLIB}
+  echo "Build TIFF Library          : " ${do_tiff}
+  echo ""
+  echo "Build TrueType Font Library : " ${do_ttf}
+  echo "TrueType Font Library       : " ${FREETYPE}
+  echo "Adobe Type 1 Font Library   : " ${T1LIB}
+  echo "JPEG Library                : " ${do_t1}
+  echo "Clean after instal          : " ${do_clean}
+fi
+
+test -d ${LIBJPEG}
+check_status $? "${LIBJPEG} not present"
+test -d ${FREETYPE}
+check_status $? "${FREETYPE} not present"
+test -d ${LIBPNG}
+check_status $? "${LIBPNG} not present"
+test -d ${T1LIB}
+check_status $? "${T1LIB} not present"
+test -d ${TIFFLIB}
+check_status $? "${TIFFLIB} not present"
+
+test -d ${RTEMS_MAKEFILE_PATH}
+check_status $? "${RTEMS_MAKEFILE_PATH} not present"
+
+######### END OF Consistency checks
 
 echo "Generating RTEMS_SETTINGS file..."
 make -f Makefile.settings clean all
@@ -38,114 +162,164 @@ source ./RTEMS_SETTINGS
 
 PREFIX=${BSPTOP}
 
-echo WARNING USING ${PREFIX} for install point!!!
+if [ ${verbose} = yes ] ; then
+  echo "USING ${PREFIX} for install point!!!"
+fi
 
-do_step()
+
+######### Log Directory
+LOGDIR=${BASEDIR}/log
+if [ ! -d ${LOGDIR} ] ; then
+  mkdir ${LOGDIR}
+fi
+######### 
+
+######### Build and install JPEG
+j_jpeg()
 {
-  case $1 in
-    rmlogs)
-      rm -f */build.log */c.log */clean.log */distclean.log */install.log
-      ;;
-    configure)
-      echo "configuring jpeg-7 ..."
-      cd jpeg-7
-      CFLAGS="${CPU_CFLAGS}" \
-         ./configure --host=${TARGET} --prefix=${PREFIX} \
-         --includedir=${PREFIX}/lib/include \
-         --disable-shared \
-         --disable-programs \
-         >c.log 2>&1
-      check_status $? Could not configure jpeg-7
+  cd ${LIBJPEG}
+  CFLAGS="${CPU_CFLAGS}" \
+     ./configure --host=${TARGET} --prefix=${PREFIX} \
+     --includedir=${PREFIX}/lib/include \
+     --disable-shared \
+     --disable-programs
+  check_status $? Could not configure ${LIBJPEG}
 
-      cd ../tiff-3.9.2
-      check_status $? Could not cd to tiff-3.9.2
+  make
+  check_status $? Could not make ${LIBJPEG}
 
-      echo "configuring tiff-3.9.2 ..."
-      CFLAGS="${CPU_CFLAGS}" \
-         ./configure --host=${TARGET} --prefix=${PREFIX} \
-         --includedir=${PREFIX}/lib/include \
-         --disable-shared \
-         >c.log 2>&1
-      check_status $? Could not configure tiff-3.9.2
+  make install
+  check_status $? Could not make isntall ${LIBJPEG}
 
-      cd ../libpng-1.2.41
-      echo "configuring libpng-1.2.41 ..."
-      # include BSP_CFLAGS so it sees libz
-      CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
-         ./configure --host=${TARGET} --prefix=${PREFIX} \
-         --includedir=${PREFIX}/lib/include \
-         --disable-shared \
-         >c.log 2>&1
-      check_status $? Could not configure libpng-1.2.41
+  if [ ${do_clean} = yes ] ; then
+    make distclean
+    check_status $? Could not make distclean ${LIBJPEG}
+  fi
 
-      cd ../freetype-2.3.11
-      echo "configuring freetype-2.3.11 ..."
-      # include BSP_CFLAGS so it sees libz
-      CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
-         ./configure --host=${TARGET} --prefix=${PREFIX} \
-         --includedir=${PREFIX}/lib/include \
-         --disable-shared \
-         >c.log 2>&1
-      check_status $? Could not configure freetype-2.3.11
-
-      cd ../t1lib-5.1.2
-      echo "configuring t1lib-5.1.2 ..."
-      # include BSP_CFLAGS so it sees libz
-      CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
-         ./configure --host=${TARGET} --prefix=${PREFIX} \
-         --includedir=${PREFIX}/lib/include \
-         --datadir=${PREFIX}/share \
-         --disable-shared \
-         --without-athena --without-x \
-         >c.log 2>&1
-      check_status $? Could not configure t1lib-5.1.2
-
-      cd ..
-      ;;
-    build|clean|distclean|install)
-      action=${1}
-      if [ ${1} = build ] ; then
-        action=
-      fi
-
-      for d in jpeg-7 tiff-3.9.2 libpng-1.2.41 freetype-2.3.11 t1lib-5.1.2
-      do
-        echo "Performing ${1} on ${d} ..."
-
-        cd ${d}
-        check_status $? Could not cd to ${d}
-        make ${action} >${1}.log 2>&1
-
-        if [ ${1} != distclean ] ; then
-          check_status $? Could not ${1} in ${d}
-        fi
-        #if [ ${1} = distclean ] ; then
-        #  rm -f build.log c.log clean.log distclean.log
-        #fi
-        cd ..
-      done
-
-      echo "Performing ${1} on rtems-nano-x ..."
-      case $1 in
-        build|clean|install)
-          #cd rtems-nano-x
-          #make -C microwin/src -f Makefile.rtems ${action}
-          #check_status $? Could not ${1} in rtems-nano-x
-          #cd ..
-          ;;
-        *)
-          ;;
-      esac
-      ;;
-    *)
-      check_status 1 Unknown action ${1}
-      ;;
-  esac
+  cd ..
 }
 
-for a in $*
-do
-  do_step ${a}
-done
+if [ ${do_jpeg} = yes ] ; then
+  echo "Building ${LIBJPEG} ..."
+  j_jpeg >${LOGDIR}/${TARGET}-${LIBJPEG}.log 2>&1
+fi
+
+######### Build and install PNG support
+j_png()
+{
+  cd ${LIBPNG}
+  CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
+     ./configure --host=${TARGET} --prefix=${PREFIX} \
+     --includedir=${PREFIX}/lib/include \
+     --disable-shared
+  check_status $? Could not configure ${LIBPNG}
+
+  make
+  check_status $? Could not make ${LIBPNG}
+
+  make install
+  check_status $? Could not make isntall ${LIBPNG}
+
+  if [ ${do_clean} = yes ] ; then
+    make distclean
+    check_status $? Could not make distclean ${LIBPNG}
+  fi
+
+  cd ..
+}
+
+if [ ${do_png} = yes ] ; then
+  echo "Building ${LIBPNG} ..."
+  j_png >${LOGDIR}/${TARGET}-${LIBPNG}.log 2>&1
+fi
+
+######### Build and install TIFF support
+j_tiff()
+{
+  cd ${TIFFLIB}
+  CFLAGS="${CPU_CFLAGS}" \
+     ./configure --host=${TARGET} --prefix=${PREFIX} \
+     --includedir=${PREFIX}/lib/include \
+     --disable-shared
+  check_status $? Could not configure ${TIFFLIB}
+
+  make
+  check_status $? Could not make ${TIFFLIB}
+
+  make install
+  check_status $? Could not make isntall ${TIFFLIB}
+
+  if [ ${do_clean} = yes ] ; then
+    make distclean
+    check_status $? Could not make distclean ${TIFFLIB}
+  fi
+
+  cd ..
+}
+
+if [ ${do_tiff} = yes ] ; then
+  echo "Building ${TIFFLIB} ..."
+  j_tiff >${LOGDIR}/${TARGET}-${TIFFLIB}.log 2>&1
+fi
+
+######### Build and install Adobe Type 1 Font support
+j_t1()
+{
+  cd ${T1LIB}
+  CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
+     ./configure --host=${TARGET} --prefix=${PREFIX} \
+     --includedir=${PREFIX}/lib/include \
+     --datadir=${PREFIX}/share \
+     --disable-shared \
+     --without-athena --without-x
+  check_status $? Could not configure ${T1LIB}
+
+  make
+  check_status $? Could not make ${T1LIB}
+
+  make install
+  check_status $? Could not make isntall ${T1LIB}
+
+  if [ ${do_clean} = yes ] ; then
+    make distclean
+    check_status $? Could not make distclean ${T1LIB}
+  fi
+
+  cd ..
+}
+
+if [ ${do_t1} = yes ] ; then
+  echo "Building ${T1LIB}..."
+  j_t1 >${LOGDIR}/${TARGET}-${T1LIB}.log 2>&1
+fi
+
+######### Build and install Truetype Font support
+j_ttf()
+{
+  cd ${FREETYPE}
+  CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
+     ./configure --host=${TARGET} --prefix=${PREFIX} \
+     --includedir=${PREFIX}/lib/include \
+     --disable-shared 
+  check_status $? Could not configure ${FREETYPE}
+
+  make
+  check_status $? Could not make ${FREETYPE}
+
+  make install
+  check_status $? Could not make isntall ${FREETYPE}
+
+  if [ ${do_clean} = yes ] ; then
+    make distclean
+    check_status $? Could not make distclean ${FREETYPE}
+  fi
+
+  cd ..
+}
+
+if [ ${do_ttf} = yes ] ; then
+  echo "Building ${FREETYPE} ..."
+  j_ttf >${LOGDIR}/${TARGET}-${FREETYPE}.log 2>&1
+fi
 
 exit 0
