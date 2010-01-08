@@ -2,26 +2,65 @@
 # $Id$
 #
 
-This is the RTEMS Graphics Toolkit.  
+This is the RTEMS Graphics Toolkit. It is a collection of free software
+packages that are suitable for use in building graphical interfaces for
+RTEMS-based embedded systems.
 
-The packages jpeg-7 and tiff-3.9.2 appear to build correctly if
-configured like this:
+You should have RTEMS installed and configured for your BSP.  The
+RTEMS configuration should meet the following requirements:
 
-CFLAGS="-mcpu=cypress" ./configure --host=sparc-rtems4.10 --prefix=/tmp/jpg
-make
-make install
++ TCP/IP enabled 
+  - not required at run-time but has endian swapping routines
++ POSIX enabled
 
-The CFLAGS and target should be automatically gathered from the
-install Makefile information.
+Additionally, your BSP should have a framebuffer and pointing device
+(e.g. mouse, touch screen, etc).  This is an area where RTEMS and
+this kit needs improvement on configuration but the basics are in place.
 
-Both packages install programs in addition to the libraries we really
-want.  We need to disable those.
+The ./do_it script has the following parameters:
 
-NOTE: The install point (--prefix) is set so that the contents are 
-      installed with the BSP and the CFLAGS are set for the BSP.
+    do_one [options]
+      -A - build and install all libraries
+      -j - build JPEG support (default=no)
+      -p - build PNG support (default=no)
+      -t - build TIFF support (default=no)
+      -1 - build Adobe Type 1 font support (default=no)
+      -T - build Truetype font support (default=no)
+      -c - clean after building (default=no)
+      -v - verbose
 
-RTEMS_MAKEFILE_PATH=XXX \
-  ./doit configure build install distclean
+    NOTES:
+      + Use of each option toggles the setting.  For example, \"-v -v -A -1\"
+        results in verbose=no and all steps done except Type 1 fonts.
+      + RTEMS_MAKEFILE_PATH must be set
+      + By default, nothing is built.
 
-NOTE: Build procedure subject to change. :)
+Below is an invocation for the pc386 BSP which should build all of the
+supported libraries and install them for the pc386 BSP which is installed
+into your ${HOME}.  RTEMS was configured with --prefix set to:
+${HOME}/rtems-4.10-work/bsp-install/
+
+RTEMS_MAKEFILE_PATH=${HOME}/rtems-4.10-work/bsp-install/i386-rtems4.10/pc386/ \
+    ./do_it -A -v
+
+The CFLAGS and target information are automatically gathered from the
+install Makefile information.  This is used to properly configure
+and install the desired graphics support libraries.
+
+After installing this, you can proceed to building Microwin/Nano-X.  It
+is expected that this will be integrated into a future revision of the
+Graphics Toolkit.  We hope to add other libraries like SVGAlib and
+FLTK in the future.  This is definitely an area in which users can 
+contribute.
+
+--joel
+
+Usage Notes:
+
+Adobe Type 1 Library
+====================
++ This needs .t1librc and an override on the location of t1 fonts.
+  Then we need to put some T1 fonts in the rootfs filesystem.
+  This works now by setting the environment variable.  See rtems_init.c
+  in the microwin source.
 

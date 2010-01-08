@@ -40,7 +40,7 @@ verbose="no"
 usage()
 {
 cat <<EOF
-do_one [options] CPU BSP
+do_one [options]
   -A - build and install all libraries
   -j - build JPEG support (default=no)
   -p - build PNG support (default=no)
@@ -53,7 +53,8 @@ do_one [options] CPU BSP
 NOTES:
   + Use of each option toggles the setting.  For example, \"-v -v -A -1\"
     results in verbose=no and all steps done except Type 1 fonts.
-  + RTEMS_MAKEFILE_PATH must be set
+  + RTEMS_MAKEFILE_PATH must be set.
+  + By default, nothing is built.
 EOF
 }
 

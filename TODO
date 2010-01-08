@@ -2,8 +2,24 @@
 #  $Id$
 #
 
-+ Disable building programs (e.g. only build libraries)
-
-+ Add font libraries
-
 + Add microwin
+
+BSPs
+====
++ We need a generic constant like "POINTING DRIVER".
+
++ BSPs need to have a #define that indicates they have a pointing driver.
+
+Nano-X
+======
++ Fix message "Error opening /dev/fb0: m" on BSPs (e.g. sis) which
+  do not have framebuffer device
+
++ check if we want to use "non-default" swap routines (include/swap.h)
+
++ Clean up rtems_init.c when the BSPs make known their graphics/pointing
+  capabilities.
+
++ Remove hack in microwin/src/drivers/vgaplan4.h and make outb/outw
+  more generic -- like weak symbols or something with default implementations
+  on non-x86 architectures.
