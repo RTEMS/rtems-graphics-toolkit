@@ -40,7 +40,7 @@ verbose="no"
 usage()
 {
 cat <<EOF
-do_one [options]
+do_it [options]
   -A - build and install all libraries
   -j - build JPEG support (default=no)
   -p - build PNG support (default=no)
