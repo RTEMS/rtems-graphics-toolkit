@@ -1,0 +1,9 @@
+.cvsignore
+config.log
+config.status
+freetype-config
+freetype2.pc
+ftconfig.h
+libtool
+unix-cc.mk
+unix-def.mk

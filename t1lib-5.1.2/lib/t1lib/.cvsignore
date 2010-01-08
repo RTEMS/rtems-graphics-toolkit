@@ -1,0 +1,16 @@
+.cvsignore
+Makefile
+parseAFM.lo
+sysconf.h
+t1aaset.lo
+t1afmtool.lo
+t1base.lo
+t1delete.lo
+t1enc.lo
+t1env.lo
+t1finfo.lo
+t1load.lo
+t1outline.lo
+t1set.lo
+t1subset.lo
+t1trans.lo

@@ -1,0 +1,10 @@
+.cvsignore
+Makefile
+t1lib_doc.aux
+t1lib_doc.dvi
+t1lib_doc.idx
+t1lib_doc.ilg
+t1lib_doc.ind
+t1lib_doc.log
+t1lib_doc.ps
+t1lib_doc.toc

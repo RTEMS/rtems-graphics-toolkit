@@ -1,0 +1,7 @@
+.cvsignore
+.libs
+Makefile
+subset
+subset.lo
+t1example1
+t1example1.lo

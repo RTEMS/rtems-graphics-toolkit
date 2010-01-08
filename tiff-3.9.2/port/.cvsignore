@@ -1,0 +1,7 @@
+.cvsignore
+.deps
+.libs
+Makefile
+dummy.lo
+lfind.lo
+libport.la

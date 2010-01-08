@@ -1,5 +1,32 @@
 2010-01-08	Joel Sherrill <joel.sherrill@oarcorp.com>
 
+	* README.Microwindows, freetype-2.3.11/.cvsignore,
+	freetype-2.3.11/builds/unix/.cvsignore,
+	freetype-2.3.11/objs/.cvsignore, jpeg-7/.cvsignore,
+	libpng-1.2.41/.cvsignore, t1lib-5.1.2/.cvsignore,
+	t1lib-5.1.2/doc/.cvsignore, t1lib-5.1.2/examples/.cvsignore,
+	t1lib-5.1.2/lib/.cvsignore, t1lib-5.1.2/lib/t1lib/.cvsignore,
+	t1lib-5.1.2/lib/type1/.cvsignore, t1lib-5.1.2/type1afm/.cvsignore,
+	tiff-3.9.2/.cvsignore, tiff-3.9.2/build/.cvsignore,
+	tiff-3.9.2/contrib/.cvsignore, tiff-3.9.2/contrib/acorn/.cvsignore,
+	tiff-3.9.2/contrib/addtiffo/.cvsignore,
+	tiff-3.9.2/contrib/dbs/.cvsignore,
+	tiff-3.9.2/contrib/dbs/xtiff/.cvsignore,
+	tiff-3.9.2/contrib/iptcutil/.cvsignore,
+	tiff-3.9.2/contrib/mac-cw/.cvsignore,
+	tiff-3.9.2/contrib/mac-mpw/.cvsignore,
+	tiff-3.9.2/contrib/mfs/.cvsignore, tiff-3.9.2/contrib/pds/.cvsignore,
+	tiff-3.9.2/contrib/ras/.cvsignore,
+	tiff-3.9.2/contrib/stream/.cvsignore,
+	tiff-3.9.2/contrib/tags/.cvsignore,
+	tiff-3.9.2/contrib/win_dib/.cvsignore, tiff-3.9.2/html/.cvsignore,
+	tiff-3.9.2/html/images/.cvsignore, tiff-3.9.2/html/man/.cvsignore,
+	tiff-3.9.2/libtiff/.cvsignore, tiff-3.9.2/man/.cvsignore,
+	tiff-3.9.2/port/.cvsignore, tiff-3.9.2/test/.cvsignore,
+	tiff-3.9.2/tools/.cvsignore: New files.
+
+2010-01-08	Joel Sherrill <joel.sherrill@oarcorp.com>
+
 	* do_it: Fix typo.
 
 2010-01-08	Joel Sherrill <joel.sherrill@oarcorp.com>

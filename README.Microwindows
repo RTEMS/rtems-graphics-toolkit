@@ -1,0 +1,28 @@
+#
+#  $Id$
+#
+
+8 January 2010
+
+Using Microwindows Release Tarballs
+===================================
+There is currently not a Microwindows release with current RTEMS patches.
+
+Using Microwindows GIT
+======================
+
+  To Check Out
+     git clone git://microwindows.org/microwin
+
+  To update
+     cd microwin
+     git pull origin
+
+Building
+========
+
+  cd microwin/src
+  cp config config.ship
+  cp Configs/config.rtems config
+  RTEMS_MAKEFILE_PATH=[build directory/prefix]/[target]/[rtemsbsp]/ \
+    make -f Makefile.rtems clean all

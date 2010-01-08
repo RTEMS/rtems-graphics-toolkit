@@ -1,0 +1,5 @@
+.cvsignore
+.libs
+Makefile
+type1afm
+type1afm.lo
