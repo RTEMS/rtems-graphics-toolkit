@@ -1,5 +1,9 @@
 2010-01-08	Joel Sherrill <joel.sherrill@oarcorp.com>
 
+	* svgalib-1.4.3/Makefile.cfg.ORIGINAL: New file.
+
+2010-01-08	Joel Sherrill <joel.sherrill@oarcorp.com>
+
 	svgalib 1.4.3. imported
 	* ORIGIN: Updated.
 
