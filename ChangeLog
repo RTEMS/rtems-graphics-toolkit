@@ -1,5 +1,10 @@
 2010-01-08	Joel Sherrill <joel.sherrill@oarcorp.com>
 
+	svgalib 1.4.3. imported
+	* ORIGIN: Updated.
+
+2010-01-08	Joel Sherrill <joel.sherrill@oarcorp.com>
+
 	* README.Microwindows, freetype-2.3.11/.cvsignore,
 	freetype-2.3.11/builds/unix/.cvsignore,
 	freetype-2.3.11/objs/.cvsignore, jpeg-7/.cvsignore,

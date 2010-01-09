@@ -1,0 +1,4 @@
+Background mode is not working with kernels in the 2.3 series (due to the
+removing of the possiblity to mmap /proc/self/mem).
+If you wish to use svgalib with kernel 2.3.27 or later, edit Makefile.cfg,
+and comment out the BACKGROUND = y line.

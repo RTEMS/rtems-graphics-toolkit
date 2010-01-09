@@ -1,0 +1,29 @@
+driver 		changed	tested
+ali.c		v
+apm.c		v	v
+ark.c		v
+ati.c		v
+chips.c		v2	v
+cirrus.c	v2	v
+egadrv.c	v
+et3000.c	v
+et4000.c	v1
+et6000.c	v	v
+gvga6400.c	v
+mach32.c	v	v
+mx.c		v	v
+nv3.c		v	v
+oak.c		v
+paradise.c	v	v
+s3.c		v	v
+tvga8900.c	v	v
+vesa.c		v	v
+vgadrv.c	v	v
+rage.c		v	v
+sis.c		v	v
+banshee.c	v	v
+i740.c		v	v
+
+1- should have no poblems with banked memory, but won't work with linear
+   addressing
+2- should work with linear framebuffer/mmio only on a pci bus.

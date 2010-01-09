@@ -7,3 +7,10 @@ libtiff      - (v3.6.2) http://www.libtiff.org/
 libpng       - (1.2.42) http://www.libpng.org/pub/png/libpng.html
 libfreetype  - (2.3.11) http://freetype.sourceforge.net/index2.html
 libt1        - (5.1.2)  http://www.t1lib.org/
+svgalib      - (1.4.3)  http://svgalib.org/
+
+FLTK
+  svn co http://svn.easysw.com/public/fltk/fltk/branches/branch-1.3/ fltk-1.3
+
+Microwindows/Nano-X
+  Soon: Microwindows GIT  

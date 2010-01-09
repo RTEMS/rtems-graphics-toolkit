@@ -1,0 +1,12 @@
+Some rage cards use double pixel clock than is calculated by the formula,
+and I don't know how to recognize them, so if you have such a card, set
+the option RageDoubleClock in the config file. And please tell me about
+it, so I can try to diagnose.
+
+Two new mouse types are supported: pnp (explained in gpm documentation),
+and Wacom Graphire tablet.
+
+nv3 driver is fixed to work on Riva128 again ( a = should have been a ==).
+
+
+
