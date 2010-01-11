@@ -13,6 +13,6 @@ fltk         - (1.1.10) http://www.fltk.org
 FLTK
   svn co http://svn.easysw.com/public/fltk/fltk/branches/branch-1.3/ fltk-1.3
 
-
 Microwindows/Nano-X
-  Soon: Microwindows GIT  
+  git clone git://microwindows.org/microwin
+  git clone git://microwindows.org/nxlib
