@@ -33,6 +33,9 @@ do_tiff="no"
 do_t1="no"
 # Do we build Truetype Font support?
 do_ttf="no"
+
+# Do we build Microwindows/Nano-X support?
+do_nanox="no"
 # Are we noisy when running?
 verbose="no"
 ######################## Parse arguments ###########################
@@ -47,6 +50,7 @@ do_it [options]
   -t - build TIFF support (default=no)
   -1 - build Adobe Type 1 font support (default=no)
   -T - build Truetype font support (default=no)
+  -n - build Microwindows/Nano-X support (default=no)
   -c - clean after building (default=no)
   -v - verbose
 
@@ -82,7 +86,7 @@ toggle()
   esac
 }
 
-while getopts Ajpt1Tv OPT
+while getopts Ajpt1Tncv OPT
 do
     case "$OPT" in
       A) do_jpeg="yes"
@@ -90,12 +94,14 @@ do
          do_tiff="yes"
          do_t1="yes"
          do_ttf="yes"
+         do_nanox="yes"
          ;;
       j) do_jpeg=`toggle ${do_jpeg}` ;;
       p) do_png=`toggle ${do_png}` ;;
       t) do_tiff=`toggle ${do_tiff}` ;;
       1) do_t1=`toggle ${do_t1}` ;;
       T) do_ttf=`toggle ${do_ttf}` ;;
+      n) do_nanox=`toggle ${do_nanox}` ;;
       c) do_clean=`toggle ${do_clean}` ;;
       v) verbose=`toggle ${verbose}` ;;
       *) fatal;;
@@ -106,18 +112,22 @@ shiftcount=`expr $OPTIND - 1`
 shift $shiftcount
 
 if [ ${verbose} = yes ] ; then
-  echo "JPEG Library                : " ${LIBJPEG}
-  echo "Build JPEG Library          : " ${do_jpeg}
-  echo "PNG Library                 : " ${LIBPNG}
-  echo "Build PNG Library           : " ${do_png}
-  echo "TIFF Library                : " ${TIFFLIB}
-  echo "Build TIFF Library          : " ${do_tiff}
+  echo "JPEG Library                    : " ${LIBJPEG}
+  echo "Build JPEG Library              : " ${do_jpeg}
+  echo "PNG Library                     : " ${LIBPNG}
+  echo "Build PNG Library               : " ${do_png}
+  echo "TIFF Library                    : " ${TIFFLIB}
+  echo "Build TIFF Library              : " ${do_tiff}
   echo ""
-  echo "Build TrueType Font Library : " ${do_ttf}
-  echo "TrueType Font Library       : " ${FREETYPE}
-  echo "Adobe Type 1 Font Library   : " ${T1LIB}
-  echo "JPEG Library                : " ${do_t1}
-  echo "Clean after instal          : " ${do_clean}
+  echo "Build TrueType Font Library     : " ${do_ttf}
+  echo "TrueType Font Library           : " ${FREETYPE}
+  echo "Build Adobe Type 1 Font Library : " ${do_t1}
+  echo "Adobe Type 1 Font Library       : " ${T1LIB}
+  echo ""
+  echo "Build Microwindows/Nano-X       : " ${do_nanox}
+  echo "Microwindows/Nano-X Source      : " ${NANOX}
+
+  echo "Clean after install             : " ${do_clean}
 fi
 
 ######### START OF Consistency checks
@@ -127,6 +137,7 @@ if [ X${RTEMS_MAKEFILE_PATH} = X ] ; then
   exit 1
 fi
 
+# XXX TBD check if enabled before checking if present?
 test -d ${LIBJPEG}
 check_status $? "${LIBJPEG} not present"
 test -d ${FREETYPE}
@@ -137,6 +148,8 @@ test -d ${T1LIB}
 check_status $? "${T1LIB} not present"
 test -d ${TIFFLIB}
 check_status $? "${TIFFLIB} not present"
+test -d ${NANOX}
+check_status $? "${NANOX} not present"
 
 test -d ${RTEMS_MAKEFILE_PATH}
 check_status $? "${RTEMS_MAKEFILE_PATH} not present"
@@ -313,6 +326,33 @@ j_ttf()
 if [ ${do_ttf} = yes ] ; then
   echo "Building ${FREETYPE} ..."
   j_ttf >${LOGDIR}/${TARGET}-${FREETYPE}.log 2>&1
+fi
+
+######### Build and install Nano-X support
+j_nanox()
+{
+  cd ${NANOX}/src
+
+  # RTEMS_MAKEFILE_PATH inherited
+  export RTEMS_MAKEFILE_PATH
+
+  make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems
+  check_status $? Could not make ${NANOX}
+
+  make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems install
+  check_status $? Could not make isntall ${NANOX}
+
+  if [ ${do_clean} = yes ] ; then
+    make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems clean
+    check_status $? Could not make distclean ${NANOX}
+  fi
+
+  cd ../..
+}
+
+if [ ${do_nanox} = yes ] ; then
+  echo "Building ${NANOX} ..."
+  j_nanox >${LOGDIR}/${TARGET}-${NANOX}.log 2>&1
 fi
 
 exit 0

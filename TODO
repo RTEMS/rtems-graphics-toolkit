@@ -10,6 +10,12 @@ BSPs
 
 + BSPs need to have a #define that indicates they have a pointing driver.
 
+svgalib
+=======
++ Must configure /dev/null in application
++ Must add /dev/mem and configure it in application (or find config option)
++ May want to add SVGALIB_CONFIG_FILE
+
 Nano-X
 ======
 + Fix message "Error opening /dev/fb0: m" on BSPs (e.g. sis) which

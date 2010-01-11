@@ -21,8 +21,11 @@ Using Microwindows GIT
 Building
 ========
 
-  cd microwin/src
-  cp config config.ship
-  cp Configs/config.rtems config
+This assumes you are building from this directory.
+
   RTEMS_MAKEFILE_PATH=[build directory/prefix]/[target]/[rtemsbsp]/ \
-    make -f Makefile.rtems clean all
+    CONFIG=`pwd`/microwin/src/Configs/config.rtems \
+      make -f Makefile.rtems clean all
+
+NOTE: In contrast to previous instructions, you do not have to overwrite
+      the file src/config. :)
