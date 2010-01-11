@@ -36,6 +36,10 @@ do_ttf="no"
 
 # Do we build Microwindows/Nano-X support?
 do_nanox="no"
+
+# Do we build FLTK support?
+do_fltk="yes"
+
 # Are we noisy when running?
 verbose="no"
 ######################## Parse arguments ###########################
@@ -51,6 +55,7 @@ do_it [options]
   -1 - build Adobe Type 1 font support (default=no)
   -T - build Truetype font support (default=no)
   -n - build Microwindows/Nano-X support (default=no)
+  -f - build FLTK support (default=no)
   -c - clean after building (default=no)
   -v - verbose
 
@@ -86,7 +91,7 @@ toggle()
   esac
 }
 
-while getopts Ajpt1Tncv OPT
+while getopts Ajpt1Tnfcv OPT
 do
     case "$OPT" in
       A) do_jpeg="yes"
@@ -102,6 +107,7 @@ do
       1) do_t1=`toggle ${do_t1}` ;;
       T) do_ttf=`toggle ${do_ttf}` ;;
       n) do_nanox=`toggle ${do_nanox}` ;;
+      f) do_fltk=`toggle ${do_fltk}` ;;
       c) do_clean=`toggle ${do_clean}` ;;
       v) verbose=`toggle ${verbose}` ;;
       *) fatal;;
@@ -126,8 +132,12 @@ if [ ${verbose} = yes ] ; then
   echo ""
   echo "Build Microwindows/Nano-X       : " ${do_nanox}
   echo "Microwindows/Nano-X Source      : " ${NANOX}
-
+  echo ""
+  echo "Build FLTK                      : " ${do_fltk}
+  echo "FLTK Source                     : " ${FLTK}
+  echo ""
   echo "Clean after install             : " ${do_clean}
+  echo ""
 fi
 
 ######### START OF Consistency checks
@@ -195,7 +205,7 @@ j_jpeg()
   check_status $? Could not make ${LIBJPEG}
 
   make install
-  check_status $? Could not make isntall ${LIBJPEG}
+  check_status $? Could not make install ${LIBJPEG}
 
   if [ ${do_clean} = yes ] ; then
     make distclean
@@ -224,7 +234,7 @@ j_png()
   check_status $? Could not make ${LIBPNG}
 
   make install
-  check_status $? Could not make isntall ${LIBPNG}
+  check_status $? Could not make install ${LIBPNG}
 
   if [ ${do_clean} = yes ] ; then
     make distclean
@@ -253,7 +263,7 @@ j_tiff()
   check_status $? Could not make ${TIFFLIB}
 
   make install
-  check_status $? Could not make isntall ${TIFFLIB}
+  check_status $? Could not make install ${TIFFLIB}
 
   if [ ${do_clean} = yes ] ; then
     make distclean
@@ -284,7 +294,7 @@ j_t1()
   check_status $? Could not make ${T1LIB}
 
   make install
-  check_status $? Could not make isntall ${T1LIB}
+  check_status $? Could not make install ${T1LIB}
 
   if [ ${do_clean} = yes ] ; then
     make distclean
@@ -313,7 +323,7 @@ j_ttf()
   check_status $? Could not make ${FREETYPE}
 
   make install
-  check_status $? Could not make isntall ${FREETYPE}
+  check_status $? Could not make install ${FREETYPE}
 
   if [ ${do_clean} = yes ] ; then
     make distclean
@@ -340,7 +350,7 @@ j_nanox()
   check_status $? Could not make ${NANOX}
 
   make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems install
-  check_status $? Could not make isntall ${NANOX}
+  check_status $? Could not make install ${NANOX}
 
   if [ ${do_clean} = yes ] ; then
     make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems clean
@@ -353,6 +363,35 @@ j_nanox()
 if [ ${do_nanox} = yes ] ; then
   echo "Building ${NANOX} ..."
   j_nanox >${LOGDIR}/${TARGET}-${NANOX}.log 2>&1
+fi
+
+######### Build and install FLTK support
+j_fltk()
+{
+  cd ${FLTK}
+  CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
+     ./configure --host=${TARGET} --prefix=${PREFIX} \
+     --disable-shared 
+  check_status $? Could not configure ${FLTK}
+
+  make
+  check_status $? Could not make ${FLTK}
+
+  make install
+  check_status $? Could not make install ${FLTK}
+
+  if [ ${do_clean} = yes ] ; then
+    make distclean
+    check_status $? Could not make distclean ${FLTK}
+  fi
+
+  cd ..
+}
+
+if [ ${do_fltk} = yes ] ; then
+  echo "Building ${FLTK} ..."
+  echo "SKIPPING ${FLTK} ..."
+  # j_fltk >${LOGDIR}/${TARGET}-${FLTK}.log 2>&1
 fi
 
 exit 0

@@ -1,5 +1,9 @@
 2010-01-10	Joel Sherrill <joel.sherrill@oarcorp.com>
 
+	* TODO, VERSIONS, do_it: Add initial FLTK configure support.
+
+2010-01-10	Joel Sherrill <joel.sherrill@oarcorp.com>
+
 	* ORIGIN, README.Microwindows, TODO, VERSIONS, do_it: Add
 	Microwindows/Nano-X support.
 

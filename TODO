@@ -29,3 +29,8 @@ Nano-X
 + Remove hack in microwin/src/drivers/vgaplan4.h and make outb/outw
   more generic -- like weak symbols or something with default implementations
   on non-x86 architectures.
+
+FLTK
+====
++ We will probably have to have a subset of X11R6 header files installed as well
+  as nxlib before this will work.

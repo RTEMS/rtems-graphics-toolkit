@@ -8,3 +8,4 @@ LIBPNG=libpng-1.2.41
 T1LIB=t1lib-5.1.2
 TIFFLIB=tiff-3.9.2
 NANOX=microwin
+FLTK=fltk-1.1.10
