@@ -15,7 +15,7 @@ CSRCS += devmem.c
 COBJS = $(CSRCS:%.c=${ARCH}/%.o)
 DEFINES += -I.
 
-SYS_H_FILES=sys/mman.h
+SYS_H_FILES=sys/kd.h sys/mman.h sys/vt.h
 RTEMS_H_FILES=rtems/devmem.h
 
 include $(RTEMS_MAKEFILE_PATH)/Makefile.inc
