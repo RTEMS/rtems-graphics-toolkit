@@ -87,11 +87,13 @@ ifdef MAKEWHATIS
 endif
 
 uninstall:
+ifdef RTEMS_DONT_DO_ME
 	@echo Removing all svgalib man pages.
 	@for dir in $(mandir) /usr/man /usr/local/man; do \
 		cd $$dir; \
 		rm -f $(MANPAGES) $(UNCOMANPAGES); \
-	done;\
+	done;
+endif
 
 clean:
 #	-gzip -9 man?/* 2>/dev/null

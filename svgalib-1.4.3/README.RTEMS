@@ -1,0 +1,23 @@
+#
+#  $Id$
+#
+
+This does not compile yet but this is how I was trying.
+
+ RTEMS_MAKEFILE_PATH=/home/joel/rtems-4.10-work/bsp-install/i386-rtems4.10/pc386/ make -f Makefile.rtems install
+
+There are multiple areas which need to be addressed to get this to 
+even compile.
+
++ sys/kd.h
++ sys/vt.h
++ sys/mman.h
++ /dev/mem
++ missing signals
++ uninstall is hacky and touches root :(
+
+Some of this is in mmap_kit in the rtems-graphics-toolkit.
+
+Help welcomed and appreciated.
+
+--joel

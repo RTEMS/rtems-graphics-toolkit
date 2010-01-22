@@ -1,0 +1,36 @@
+#
+# Pick up RTEMS configuration
+# NOTE: RTEMS_MAKEFILE_PATH is the path to the Makefile.inc that we need to extract BSP information from 
+#
+
+include $(RTEMS_MAKEFILE_PATH)/Makefile.inc
+# The following picks up LDFLAGS, etc for this BSP
+include $(RTEMS_CUSTOM)
+include $(PROJECT_ROOT)/make/leaf.cfg
+
+export STRIP = $(AS:as=strip)
+export CC = $(CC_FOR_TARGET) $(GCCSPECS)
+export CXX = $(CXX_FOR_TARGET) $(GCCSPECS)
+export RTEMS_TARGET = $(AS:-as=)
+export TOOLS_PREFIX = $(AS:as=)
+export LDFLAGS
+#export prefix=$(RTEMS_MAKEFILE_PATH)
+export prefix=/tmp/svgalib
+
+all install: 
+	@$(MAKE) -f Makefile $@
+
+clean:
+	@$(MAKE) -f Makefile $@
+	rm -rf rtems/rootfs rtems/FilesystemImage* rtems/stamp-filesystem
+
+var:
+	@echo RTEMS_CC=$(RTEMS_CC)
+	@echo RTEMS_CXX=$(RTEMS_CXX)
+	@echo GCCSSPECS=$(GCCSSPECS)
+	@echo RTEMS_BSP=$(RTEMS_BSP)
+	@echo PROJECT_ROOT=$(PROJECT_ROOT)
+	@echo RTEMS_TARGET=$(RTEMS_TARGET)
+	@echo TOOLS_PREFIX=$(TOOLS_PREFIX)
+	@echo LDFLAGS=$(LDFLAGS)
+	@exit 1

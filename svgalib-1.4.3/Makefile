@@ -269,6 +269,7 @@ install: uninstall $(INSTALLAOUTLIB) installheaders $(INSTALLSHAREDLIB) installc
 	@echo demos/ and threedkit/.
 
 uninstall:
+ifdef RTEMS_DONT_DO_ME
 	@echo "Removing textmode utilities..."
 	@for i in $(OBSOLETEBDIRS); do \
           for prog in $(UTILS); do \
@@ -281,6 +282,7 @@ uninstall:
 			$(OBSOLETELIBLINKS) /lib/libvga.sa /lib/libvgagl.sa \
 		     | sed s?/lib/?$$i?g`; \
          done
+endif
 ifndef KEEPSHAREDLIBS
 	@echo "Removing shared library images (old & current)..."
 	@for i in $(OBSOLETELDIRS); do \
