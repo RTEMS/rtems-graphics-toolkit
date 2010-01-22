@@ -1,0 +1,6 @@
+2010-01-21	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* ChangeLog, Makefile, README, devmem.c, madvise.c, mlock.c,
+	mlockall.c, mmap.c, mprotect.c, msync.c, munlock.c, munmap.c,
+	posix_madvise.c, rtems/devmem.h, sys/mman.h: New files.
+

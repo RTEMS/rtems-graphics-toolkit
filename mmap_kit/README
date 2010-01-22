@@ -1,0 +1,9 @@
+#
+#  $Id$
+#
+
+This directory contains:
+
++ a minimal implementation of the mmap family of calls sufficient
+  for supporting svgalib.
++ an implementation of /dev/mem
