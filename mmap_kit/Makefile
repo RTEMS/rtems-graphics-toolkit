@@ -31,8 +31,8 @@ all:    ${ARCH} $(LIB)
 $(LIB): $(OBJS)
 	$(AR) crv $(LIB) $(OBJS)
 
+INCLUDE_DIR=${PROJECT_RELEASE}/lib/include
 install: all
 	$(INSTALL_VARIANT) -m 555 ${LIB} ${PROJECT_RELEASE}/lib
-	$(INSTALL_VARIANT) -m 555 ${SYS_H_FILES} ${PROJECT_RELEASE}/include/sys
-	$(INSTALL_VARIANT) -m 555 ${RTEMS_H_FILES} \
-	    ${PROJECT_RELEASE}/include/rtems
+	$(INSTALL_VARIANT) -m 555 ${SYS_H_FILES} ${INCLUDE_DIR}/sys
+	$(INSTALL_VARIANT) -m 555 ${RTEMS_H_FILES} ${INCLUDE_DIR}/rtems
