@@ -11,3 +11,10 @@
 #endif
 
 #include <sys/mman.h>
+
+int mlock(
+  const void *addr,
+  int         flags,
+  size_t      length
+);
+

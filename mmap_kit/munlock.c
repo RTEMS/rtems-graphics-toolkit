@@ -11,3 +11,12 @@
 #endif
 
 #include <sys/mman.h>
+
+int munlock(
+  const void *addr,
+  int         flags,
+  size_t      length
+)
+{
+  return 0;
+}

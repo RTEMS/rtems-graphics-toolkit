@@ -11,3 +11,12 @@
 #endif
 
 #include <sys/mman.h>
+
+int madvise(
+  void    *addr,
+  size_t   len,
+  int      advice
+)
+{
+  return 0;
+} 

@@ -11,3 +11,12 @@
 #endif
 
 #include <sys/mman.h>
+
+int mprotect(
+  const void *addr,
+  size_t      len,
+  int         prot
+)
+{
+  return 0;
+}
