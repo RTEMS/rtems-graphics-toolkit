@@ -36,9 +36,11 @@ do_ttf="no"
 
 # Do we build Microwindows/Nano-X support?
 do_nanox="no"
+# Do we build Microwindows/Nano-X NXLib support?
+do_nxlib="no"
 
 # Do we build FLTK support?
-do_fltk="yes"
+do_fltk="no"
 
 # Are we noisy when running?
 verbose="no"
@@ -55,6 +57,7 @@ do_it [options]
   -1 - build Adobe Type 1 font support (default=no)
   -T - build Truetype font support (default=no)
   -n - build Microwindows/Nano-X support (default=no)
+  -x - build Microwindows/Nano-X NXLib support (default=no)
   -f - build FLTK support (default=no)
   -c - clean after building (default=no)
   -v - verbose
@@ -100,6 +103,8 @@ do
          do_t1="yes"
          do_ttf="yes"
          do_nanox="yes"
+	 do_nxlib="yes"
+	 do_fltk="yes"
          ;;
       j) do_jpeg=`toggle ${do_jpeg}` ;;
       p) do_png=`toggle ${do_png}` ;;
@@ -107,6 +112,7 @@ do
       1) do_t1=`toggle ${do_t1}` ;;
       T) do_ttf=`toggle ${do_ttf}` ;;
       n) do_nanox=`toggle ${do_nanox}` ;;
+      x) do_nxlib=`toggle ${do_nxlib}` ;;
       f) do_fltk=`toggle ${do_fltk}` ;;
       c) do_clean=`toggle ${do_clean}` ;;
       v) verbose=`toggle ${verbose}` ;;
@@ -132,6 +138,9 @@ if [ ${verbose} = yes ] ; then
   echo ""
   echo "Build Microwindows/Nano-X       : " ${do_nanox}
   echo "Microwindows/Nano-X Source      : " ${NANOX}
+  echo ""
+  echo "Build NXLib                     : " ${do_nxlib}
+  echo "NXLib Source                    : " ${NXLIB}
   echo ""
   echo "Build FLTK                      : " ${do_fltk}
   echo "FLTK Source                     : " ${FLTK}
@@ -160,6 +169,8 @@ test -d ${TIFFLIB}
 check_status $? "${TIFFLIB} not present"
 test -d ${NANOX}
 check_status $? "${NANOX} not present"
+test -d ${NXLIB}
+check_status $? "${NXLIB} not present"
 
 test -d ${RTEMS_MAKEFILE_PATH}
 check_status $? "${RTEMS_MAKEFILE_PATH} not present"
@@ -365,6 +376,35 @@ if [ ${do_nanox} = yes ] ; then
   echo "Building ${NANOX} ..."
   j_nanox >${LOGDIR}/${TARGET}-${NANOX}.log 2>&1
 fi
+
+
+######### Build and install NXLIB support
+j_nxlib()
+{
+  cd ${NXLIB}/src
+
+  # RTEMS_MAKEFILE_PATH inherited
+  export RTEMS_MAKEFILE_PATH
+
+  make -f Makefile.rtems 
+  check_status $? Could not make ${NXLIB}
+
+  make -f Makefile.rtems install
+  check_status $? Could not make install ${NXLIB}
+
+  if [ ${do_clean} = yes ] ; then
+    make -f Makefile.rtems clean
+    check_status $? Could not make distclean ${NXLIB}
+  fi
+
+  cd ../..
+}
+
+if [ ${do_nxlib} = yes ] ; then
+  echo "Building ${NXLIB} ..."
+  j_nxlib >${LOGDIR}/${TARGET}-${NXLIB}.log 2>&1
+fi
+
 
 ######### Build and install FLTK support
 j_fltk()
