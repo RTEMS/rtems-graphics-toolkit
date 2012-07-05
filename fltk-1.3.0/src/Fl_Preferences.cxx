@@ -52,7 +52,7 @@
 #  include <dlfcn.h>
 #else
 #  include <unistd.h>
-#  include <dlfcn.h>
+//#  include <dlfcn.h>
 #endif
 
 #ifdef WIN32
@@ -1775,7 +1775,11 @@ int Fl_Plugin_Manager::load(const char *filename) {
 #if defined(WIN32) && !defined(__CYGWIN__)
   HMODULE dl = LoadLibrary(filename);
 #else
+#if defined(__rtems__)
+  void * dl = NULL;
+#else
   void * dl = dlopen(filename, RTLD_LAZY);
+#endif
 #endif
   // There is no way of unloading a plugin!
   return (dl!=0) ? 0 : -1;

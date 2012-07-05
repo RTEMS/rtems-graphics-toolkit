@@ -15,9 +15,9 @@ ifeq '$(OS)' "Windows_NT"
 EXEEXT = .exe
 endif
 
-FLTKCONFIG   = ../fltk-config
-CXX          = $(shell $(FLTKCONFIG) --cxx)
-CXXFLAGS     = $(shell $(FLTKCONFIG) --cxxflags) -Wall -I.
+FLTKCONFIG   = /opt/rtems-4.11/i386-rtems4.11/pc386/bin/fltk-config
+#CXX          = $(shell $(FLTKCONFIG) --cxx)
+CXXFLAGS     += $(shell $(FLTKCONFIG) --cxxflags) -Wall -I.
 LINKFLTK     = $(shell $(FLTKCONFIG) --ldstaticflags)
 LINKFLTK_GL  = $(shell $(FLTKCONFIG) --use-gl --ldstaticflags)
 LINKFLTK_IMG = $(shell $(FLTKCONFIG) --use-images --ldstaticflags)
@@ -32,4 +32,4 @@ LINKFLTK_ALL = $(shell $(FLTKCONFIG) --use-images --use-gl --ldstaticflags)
 # HOW TO LINK
 .o$(EXEEXT):
 	@echo "*** Linking $@..."
-	$(CXX) $< $(LINKFLTK_ALL) -o $@
+	$(CXX) $< $(LINKFLTK) -ljpeg -ltiff -ltiffxx -lt1 -o $@

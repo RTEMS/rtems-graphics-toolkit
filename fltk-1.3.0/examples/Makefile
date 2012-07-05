@@ -1,3 +1,7 @@
+include $(RTEMS_MAKEFILE_PATH)/Makefile.inc
+include $(RTEMS_CUSTOM)
+include $(PROJECT_ROOT)/make/leaf.cfg
+
 include Makefile.FLTK
 
 RM    = rm -f
@@ -5,8 +9,8 @@ SHELL = /bin/sh
 .SILENT:
 
 # Executables
-ALL = howto-add_fd-and-popen$(EXEEXT) \
-      howto-drag-and-drop$(EXEEXT) \
+#ALL = howto-add_fd-and-popen$(EXEEXT) 
+ALL = howto-drag-and-drop$(EXEEXT) \
       howto-parse-args$(EXEEXT) \
       howto-text-over-image-button$(EXEEXT) \
       menubar-add$(EXEEXT) \
@@ -24,6 +28,7 @@ ALL = howto-add_fd-and-popen$(EXEEXT) \
 
 # default target -- build everything
 default all: $(ALL)
+	     $(make-cxx-exe)
 
 # clean everything
 clean:
