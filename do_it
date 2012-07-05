@@ -215,7 +215,7 @@ j_jpeg()
   make
   check_status $? Could not make ${LIBJPEG}
 
-  make install
+  sudo make install
   check_status $? Could not make install ${LIBJPEG}
 
   if [ ${do_clean} = yes ] ; then
@@ -228,7 +228,7 @@ j_jpeg()
 
 if [ ${do_jpeg} = yes ] ; then
   echo "Building ${LIBJPEG} ..."
-  j_jpeg >${LOGDIR}/${TARGET}-${LIBJPEG}.log 2>&1
+  j_jpeg 
 fi
 
 ######### Build and install PNG support
@@ -245,7 +245,7 @@ j_png()
   make
   check_status $? Could not make ${LIBPNG}
 
-  make install
+  sudo make install
   check_status $? Could not make install ${LIBPNG}
 
   if [ ${do_clean} = yes ] ; then
@@ -258,7 +258,7 @@ j_png()
 
 if [ ${do_png} = yes ] ; then
   echo "Building ${LIBPNG} ..."
-  j_png >${LOGDIR}/${TARGET}-${LIBPNG}.log 2>&1
+  j_png 
 fi
 
 ######### Build and install TIFF support
@@ -274,7 +274,7 @@ j_tiff()
   make
   check_status $? Could not make ${TIFFLIB}
 
-  make install
+  sudo make install
   check_status $? Could not make install ${TIFFLIB}
 
   if [ ${do_clean} = yes ] ; then
@@ -287,7 +287,7 @@ j_tiff()
 
 if [ ${do_tiff} = yes ] ; then
   echo "Building ${TIFFLIB} ..."
-  j_tiff >${LOGDIR}/${TARGET}-${TIFFLIB}.log 2>&1
+  j_tiff
 fi
 
 ######### Build and install Adobe Type 1 Font support
@@ -305,7 +305,7 @@ j_t1()
   make
   check_status $? Could not make ${T1LIB}
 
-  make install
+  sudo make install
   check_status $? Could not make install ${T1LIB}
 
   if [ ${do_clean} = yes ] ; then
