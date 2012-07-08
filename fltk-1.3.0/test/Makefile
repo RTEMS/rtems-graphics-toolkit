@@ -27,6 +27,10 @@
 
 include ../makeinclude
 
+include $(RTEMS_MAKEFILE_PATH)/Makefile.inc
+include $(RTEMS_CUSTOM)
+include $(PROJECT_ROOT)/make/leaf.cfg
+
 CPPFILES =\
 	unittests.cxx \
 	adjuster.cxx \
@@ -181,6 +185,7 @@ GLALL = \
 	shape$(EXEEXT)
 
 all:	$(ALL) $(GLDEMOS)
+	$(make-cxx-exe)
 
 gldemos:	$(GLALL)
 
@@ -274,6 +279,8 @@ uninstall-osx:
 # All demos depend on the FLTK library...
 $(ALL): $(LIBNAME)
 
+
+
 # General demos...
 unittests$(EXEEXT): unittests.o
 
@@ -320,7 +327,7 @@ curve$(EXEEXT): curve.o
 
 demo$(EXEEXT): demo.o
 	echo Linking $@...
-	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o $@ demo.o $(LINKFLTKFORMS) $(LDLIBS)
+	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o $@ demo.o $(LINKFLTKFORMS) $(LDLIBS) ../../microwin/src/obj/rtems_init.o ../../microwin/src/obj/FilesystemImage.o 
 
 device$(EXEEXT): device.o $(IMGLIBNAME)
 	echo Linking $@...
@@ -345,7 +352,8 @@ forms$(EXEEXT): forms.o
 	echo Linking $@...
 	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o $@ forms.o $(LINKFLTKFORMS) $(LDLIBS)
 
-hello$(EXEEXT): hello.o
+hello$(EXEEXT): hello.o  
+	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o $@ hello.o $(LINKFLTKFORMS) $(LDLIBS) ../../microwin/src/obj/rtems_init.o ../../microwin/src/obj/FilesystemImage.o 
 
 help$(EXEEXT): help.o $(IMGLIBNAME)
 	echo Linking $@...
