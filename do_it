@@ -412,10 +412,12 @@ j_fltk()
   cd ${FLTK}
   CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
      ./configure --host=${TARGET} --prefix=${PREFIX} \
+     --x-includes="${BSPTOP}/lib/include" --x-libraries="${BSPTOP}/lib" \
+     --disable-xft --disable-xinerama --disable-xdbe \
      --disable-shared 
   check_status $? Could not configure ${FLTK}
 
-  make
+  make -k
   check_status $? Could not make ${FLTK}
 
   make install
