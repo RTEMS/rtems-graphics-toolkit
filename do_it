@@ -94,7 +94,7 @@ toggle()
   esac
 }
 
-while getopts Ajpt1Tnfcv OPT
+while getopts Ajpt1Tnxfcv OPT
 do
     case "$OPT" in
       A) do_jpeg="yes"
@@ -215,7 +215,7 @@ j_jpeg()
   make
   check_status $? Could not make ${LIBJPEG}
 
-  sudo make install
+  sudo -E  make install
   check_status $? Could not make install ${LIBJPEG}
 
   if [ ${do_clean} = yes ] ; then
@@ -245,7 +245,7 @@ j_png()
   make
   check_status $? Could not make ${LIBPNG}
 
-  sudo make install
+  sudo -E  make install
   check_status $? Could not make install ${LIBPNG}
 
   if [ ${do_clean} = yes ] ; then
@@ -274,7 +274,7 @@ j_tiff()
   make
   check_status $? Could not make ${TIFFLIB}
 
-  sudo make install
+  sudo -E  make install
   check_status $? Could not make install ${TIFFLIB}
 
   if [ ${do_clean} = yes ] ; then
@@ -305,7 +305,7 @@ j_t1()
   make
   check_status $? Could not make ${T1LIB}
 
-  sudo make install
+  sudo -E  make install
   check_status $? Could not make install ${T1LIB}
 
   if [ ${do_clean} = yes ] ; then
@@ -334,7 +334,7 @@ j_ttf()
   make
   check_status $? Could not make ${FREETYPE}
 
-  make install
+  sudo -E  make install
   check_status $? Could not make install ${FREETYPE}
 
   if [ ${do_clean} = yes ] ; then
@@ -347,7 +347,7 @@ j_ttf()
 
 if [ ${do_ttf} = yes ] ; then
   echo "Building ${FREETYPE} ..."
-  j_ttf >${LOGDIR}/${TARGET}-${FREETYPE}.log 2>&1
+  j_ttf #>${LOGDIR}/${TARGET}-${FREETYPE}.log 2>&1
 fi
 
 ######### Build and install Nano-X support
@@ -361,7 +361,7 @@ j_nanox()
   make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems
   check_status $? Could not make ${NANOX}
 
-  make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems install
+  sudo -E  make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems install
   check_status $? Could not make install ${NANOX}
 
   if [ ${do_clean} = yes ] ; then
@@ -374,14 +374,14 @@ j_nanox()
 
 if [ ${do_nanox} = yes ] ; then
   echo "Building ${NANOX} ..."
-  j_nanox >${LOGDIR}/${TARGET}-${NANOX}.log 2>&1
+  j_nanox #>${LOGDIR}/${TARGET}-${NANOX}.log 2>&1
 fi
 
 
 ######### Build and install NXLIB support
 j_nxlib()
 {
-  cd ${NXLIB}/src
+  cd ${NXLIB}
 
   # RTEMS_MAKEFILE_PATH inherited
   export RTEMS_MAKEFILE_PATH
@@ -389,7 +389,7 @@ j_nxlib()
   make -f Makefile.rtems 
   check_status $? Could not make ${NXLIB}
 
-  make -f Makefile.rtems install
+  sudo -E  make -f Makefile.rtems install
   check_status $? Could not make install ${NXLIB}
 
   if [ ${do_clean} = yes ] ; then
@@ -402,7 +402,7 @@ j_nxlib()
 
 if [ ${do_nxlib} = yes ] ; then
   echo "Building ${NXLIB} ..."
-  j_nxlib >${LOGDIR}/${TARGET}-${NXLIB}.log 2>&1
+  j_nxlib #>${LOGDIR}/${TARGET}-${NXLIB}.log 2>&1
 fi
 
 
@@ -420,7 +420,7 @@ j_fltk()
   make -k
   check_status $? Could not make ${FLTK}
 
-  make install
+  sudo -E  make install
   check_status $? Could not make install ${FLTK}
 
   if [ ${do_clean} = yes ] ; then
@@ -434,7 +434,7 @@ j_fltk()
 if [ ${do_fltk} = yes ] ; then
   echo "Building ${FLTK} ..."
   echo "SKIPPING ${FLTK} ..."
-  # j_fltk >${LOGDIR}/${TARGET}-${FLTK}.log 2>&1
+  j_fltk # >${LOGDIR}/${TARGET}-${FLTK}.log 2>&1
 fi
 
 exit 0
