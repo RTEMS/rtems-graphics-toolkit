@@ -31,6 +31,8 @@ include $(RTEMS_MAKEFILE_PATH)/Makefile.inc
 include $(RTEMS_CUSTOM)
 include $(PROJECT_ROOT)/make/leaf.cfg
 
+LDLIBS+= ../../microwin/src/obj/rtems_init.o ../../microwin/src/obj/FilesystemImage.o 
+
 CPPFILES =\
 	unittests.cxx \
 	adjuster.cxx \
@@ -298,6 +300,8 @@ bitmap$(EXEEXT): bitmap.o
 boxtype$(EXEEXT): boxtype.o
 
 browser$(EXEEXT): browser.o
+	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o $@ browser.o $(LINKFLTKFORMS) $(LDLIBS) 
+
 
 button$(EXEEXT): button.o
 
@@ -327,7 +331,7 @@ curve$(EXEEXT): curve.o
 
 demo$(EXEEXT): demo.o
 	echo Linking $@...
-	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o $@ demo.o $(LINKFLTKFORMS) $(LDLIBS) ../../microwin/src/obj/rtems_init.o ../../microwin/src/obj/FilesystemImage.o 
+	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o $@ demo.o $(LINKFLTKFORMS) $(LDLIBS) 
 
 device$(EXEEXT): device.o $(IMGLIBNAME)
 	echo Linking $@...
@@ -337,7 +341,7 @@ doublebuffer$(EXEEXT): doublebuffer.o
 
 editor$(EXEEXT): editor.o
 	echo Linking $@...
-	$(CXX) $(ARCHFLAGS) $(LDFLAGS) editor.o -o $@ $(LINKFLTKIMG) $(LDLIBS)
+	$(CXX) $(ARCHFLAGS) $(LDFLAGS) editor.o -o $@ $(LINKFLTKIMG) $(LDLIBS) 
 
 fast_slow$(EXEEXT): fast_slow.o
 fast_slow.cxx:	fast_slow.fl ../fluid/fluid$(EXEEXT)
@@ -353,11 +357,11 @@ forms$(EXEEXT): forms.o
 	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o $@ forms.o $(LINKFLTKFORMS) $(LDLIBS)
 
 hello$(EXEEXT): hello.o  
-	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o $@ hello.o $(LINKFLTKFORMS) $(LDLIBS) ../../microwin/src/obj/rtems_init.o ../../microwin/src/obj/FilesystemImage.o 
+	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o $@ hello.o $(LINKFLTKFORMS) $(LDLIBS) 
 
 help$(EXEEXT): help.o $(IMGLIBNAME)
 	echo Linking $@...
-	$(CXX) $(ARCHFLAGS) $(LDFLAGS) help.o -o $@ $(LINKFLTKIMG) $(LDLIBS)
+	$(CXX) $(ARCHFLAGS) $(LDFLAGS) help.o -o $@ $(LINKFLTKIMG) $(LDLIBS) 
 
 iconize$(EXEEXT): iconize.o
 

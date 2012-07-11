@@ -494,8 +494,7 @@ class BlockWindow : public Fl_Double_Window
 Fl_Preferences	BlockWindow::prefs_(Fl_Preferences::USER, "fltk.org", "blocks");
 
 
-int
-main(int argc, char *argv[]) {
+extern "C" int rtems_main(int argc, char *argv[]) {
   Fl::scheme("plastic");
   Fl::visible_focus(0);
 

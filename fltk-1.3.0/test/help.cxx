@@ -59,8 +59,8 @@ void set_app_dir() {
 // 'main()' - Display the help GUI...
 //
 
-int				// O - Exit status
-main(int  argc,			// I - Number of command-line arguments
+				// O - Exit status
+extern "C" int rtems_main(int  argc,			// I - Number of command-line arguments
      char *argv[])		// I - Command-line arguments
 {
   Fl_Help_Dialog	*help;		// Help dialog
