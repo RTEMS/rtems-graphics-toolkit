@@ -4,7 +4,7 @@
 
 LIBJPEG=jpeg-7
 FREETYPE=freetype-2.3.11
-LIBPNG=libpng-1.2.41
+LIBPNG=libpng-1.5.11
 T1LIB=t1lib-5.1.2
 TIFFLIB=tiff-3.9.2
 NANOX=microwin
