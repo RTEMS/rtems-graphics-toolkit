@@ -42,6 +42,9 @@ do_nxlib="no"
 # Do we build FLTK support?
 do_fltk="no"
 
+# Do we need sudo to install?
+use_sudo="no"
+
 # Are we noisy when running?
 verbose="no"
 ######################## Parse arguments ###########################
@@ -60,6 +63,7 @@ do_it [options]
   -x - build Microwindows/Nano-X NXLib support (default=no)
   -f - build FLTK support (default=no)
   -c - clean after building (default=no)
+  -s - use sudo for make install (default=no)
   -v - verbose
 
 NOTES:
@@ -94,7 +98,7 @@ toggle()
   esac
 }
 
-while getopts Ajpt1Tnxfcv OPT
+while getopts Ajpt1Tnxfcsv OPT
 do
     case "$OPT" in
       A) do_jpeg="yes"
@@ -115,6 +119,7 @@ do
       x) do_nxlib=`toggle ${do_nxlib}` ;;
       f) do_fltk=`toggle ${do_fltk}` ;;
       c) do_clean=`toggle ${do_clean}` ;;
+      s) use_sudo=`toggle ${use_sudo}` ;;
       v) verbose=`toggle ${verbose}` ;;
       *) fatal;;
     esac
@@ -147,6 +152,13 @@ if [ ${verbose} = yes ] ; then
   echo ""
   echo "Clean after install             : " ${do_clean}
   echo ""
+fi
+
+
+if [ ${use_sudo} = yes ] ; then
+  sudo_cmd="sudo -E "
+else
+  sudo_cmd=""
 fi
 
 ######### START OF Consistency checks
@@ -215,7 +227,7 @@ j_jpeg()
   make
   check_status $? Could not make ${LIBJPEG}
 
-  sudo -E  make install
+  ${sudo_cmd}  make install
   check_status $? Could not make install ${LIBJPEG}
 
   if [ ${do_clean} = yes ] ; then
@@ -245,7 +257,7 @@ j_png()
   make
   check_status $? Could not make ${LIBPNG}
 
-  sudo -E  make install
+  ${sudo_cmd}  make install
   check_status $? Could not make install ${LIBPNG}
 
   if [ ${do_clean} = yes ] ; then
@@ -274,7 +286,7 @@ j_tiff()
   make
   check_status $? Could not make ${TIFFLIB}
 
-  sudo -E  make install
+  ${sudo_cmd}  make install
   check_status $? Could not make install ${TIFFLIB}
 
   if [ ${do_clean} = yes ] ; then
@@ -305,7 +317,7 @@ j_t1()
   make
   check_status $? Could not make ${T1LIB}
 
-  sudo -E  make install
+  ${sudo_cmd}  make install
   check_status $? Could not make install ${T1LIB}
 
   if [ ${do_clean} = yes ] ; then
@@ -334,7 +346,7 @@ j_ttf()
   make
   check_status $? Could not make ${FREETYPE}
 
-  sudo -E  make install
+  ${sudo_cmd}  make install
   check_status $? Could not make install ${FREETYPE}
 
   if [ ${do_clean} = yes ] ; then
@@ -361,7 +373,7 @@ j_nanox()
   make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems
   check_status $? Could not make ${NANOX}
 
-  sudo -E  make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems install
+  ${sudo_cmd}  make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems install
   check_status $? Could not make install ${NANOX}
 
   if [ ${do_clean} = yes ] ; then
@@ -389,7 +401,7 @@ j_nxlib()
   make -f Makefile.rtems 
   check_status $? Could not make ${NXLIB}
 
-  sudo -E  make -f Makefile.rtems install
+  ${sudo_cmd}  make -f Makefile.rtems install
   check_status $? Could not make install ${NXLIB}
 
   if [ ${do_clean} = yes ] ; then
@@ -420,7 +432,7 @@ j_fltk()
   make -k
   check_status $? Could not make ${FLTK}
 
-  sudo -E  make install
+  ${sudo_cmd}  make install
   check_status $? Could not make install ${FLTK}
 
   if [ ${do_clean} = yes ] ; then
