@@ -227,6 +227,7 @@ j_png()
   CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
      ./configure --host=${TARGET} --prefix=${PREFIX} \
      --includedir=${PREFIX}/lib/include \
+     --libdir=${PREFIX}/lib \
      --disable-shared
   check_status $? Could not configure ${LIBPNG}
 
