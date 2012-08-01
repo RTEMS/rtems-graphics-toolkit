@@ -3,8 +3,8 @@
 #
 
 LIBJPEG=jpeg-8d
-FREETYPE=freetype-2.3.11
 LIBPNG=libpng-1.5.11
+FREETYPE=freetype-2.4.10
 T1LIB=t1lib-5.1.2
 TIFFLIB=tiff-4.0.2
 NANOX=microwin
