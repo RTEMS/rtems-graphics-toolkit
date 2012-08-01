@@ -300,7 +300,7 @@ bitmap$(EXEEXT): bitmap.o
 boxtype$(EXEEXT): boxtype.o
 
 browser$(EXEEXT): browser.o
-	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o $@ browser.o $(LINKFLTKFORMS) $(LDLIBS) 
+	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o $@ browser.o $(LINKFLTKFORMS) $(LDLIBS)
 
 
 button$(EXEEXT): button.o
@@ -331,7 +331,7 @@ curve$(EXEEXT): curve.o
 
 demo$(EXEEXT): demo.o
 	echo Linking $@...
-	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o $@ demo.o $(LINKFLTKFORMS) $(LDLIBS) 
+	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o $@ demo.o $(LINKFLTKFORMS) $(LDLIBS)
 
 device$(EXEEXT): device.o $(IMGLIBNAME)
 	echo Linking $@...
@@ -341,7 +341,7 @@ doublebuffer$(EXEEXT): doublebuffer.o
 
 editor$(EXEEXT): editor.o
 	echo Linking $@...
-	$(CXX) $(ARCHFLAGS) $(LDFLAGS) editor.o -o $@ $(LINKFLTKIMG) $(LDLIBS) 
+	$(CXX) $(ARCHFLAGS) $(LDFLAGS) editor.o -o $@ $(LINKFLTKIMG) $(LDLIBS)
 
 fast_slow$(EXEEXT): fast_slow.o
 fast_slow.cxx:	fast_slow.fl ../fluid/fluid$(EXEEXT)
@@ -356,12 +356,12 @@ forms$(EXEEXT): forms.o
 	echo Linking $@...
 	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o $@ forms.o $(LINKFLTKFORMS) $(LDLIBS)
 
-hello$(EXEEXT): hello.o  
-	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o $@ hello.o $(LINKFLTKFORMS) $(LDLIBS) 
+hello$(EXEEXT): hello.o
+	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o $@ hello.o $(LINKFLTKFORMS) $(LDLIBS)
 
 help$(EXEEXT): help.o $(IMGLIBNAME)
 	echo Linking $@...
-	$(CXX) $(ARCHFLAGS) $(LDFLAGS) help.o -o $@ $(LINKFLTKIMG) $(LDLIBS) 
+	$(CXX) $(ARCHFLAGS) $(LDFLAGS) help.o -o $@ $(LINKFLTKIMG) $(LDLIBS)
 
 iconize$(EXEEXT): iconize.o
 
