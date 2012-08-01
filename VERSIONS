@@ -2,7 +2,7 @@
 #  VERSION Information for the various libraries
 #
 
-LIBJPEG=jpeg-7
+LIBJPEG=jpeg-8d
 FREETYPE=freetype-2.3.11
 LIBPNG=libpng-1.5.11
 T1LIB=t1lib-5.1.2
