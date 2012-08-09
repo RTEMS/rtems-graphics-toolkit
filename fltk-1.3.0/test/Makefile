@@ -31,7 +31,9 @@ include $(RTEMS_MAKEFILE_PATH)/Makefile.inc
 include $(RTEMS_CUSTOM)
 include $(PROJECT_ROOT)/make/leaf.cfg
 
-LDLIBS+= ../../microwin/src/obj/rtems_init.o ../../microwin/src/obj/FilesystemImage.o ../rtems_main.cxx 
+LDLIBS+= $(IMAGELIBS) 
+LDLIBS+= ../../microwin/src/obj/rtems_init.o ../../microwin/src/obj/FilesystemImage.o 
+LDLIBS+= ../rtems_main.cxx 
 
 CPPFILES =\
 	unittests.cxx \

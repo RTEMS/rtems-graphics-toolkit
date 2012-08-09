@@ -1,3 +1,9 @@
+include $(RTEMS_MAKEFILE_PATH)/Makefile.inc
+include $(RTEMS_CUSTOM)
+include $(PROJECT_ROOT)/make/leaf.cfg
+
+LDLIBS+= ../../microwin/src/obj/rtems_init.o ../../microwin/src/obj/FilesystemImage.o 
+
 #
 # "$Id: Makefile 8389 2011-02-06 14:08:08Z manolo $"
 #
