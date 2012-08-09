@@ -60,7 +60,7 @@ void set_app_dir() {
 //
 
 				// O - Exit status
-extern "C" int rtems_main(int  argc,			// I - Number of command-line arguments
+int main(int  argc,			// I - Number of command-line arguments
      char *argv[])		// I - Command-line arguments
 {
   Fl_Help_Dialog	*help;		// Help dialog

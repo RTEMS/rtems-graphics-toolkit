@@ -122,7 +122,7 @@ void sort_cb(Fl_Widget *, void *) {
   browser->sort(FL_SORT_ASCENDING);
 }
 
-extern "C" int rtems_main(int argc, char **argv) {
+int main(int argc, char **argv) {
   int i;
   if (!Fl::args(argc,argv,i)) Fl::fatal(Fl::help);
   const char* fname = (i < argc) ? argv[i] : "browser.cxx";

@@ -29,7 +29,7 @@
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Box.H>
 
-extern "C" int rtems_main(int argc, char **argv) {
+int main(int argc, char **argv) {
   Fl_Window *window = new Fl_Window(340,180);
   Fl_Box *box = new Fl_Box(20,40,300,100,"Hello, World!");
   box->box(FL_UP_BOX);

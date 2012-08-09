@@ -25,8 +25,6 @@
 //     http://www.fltk.org/str.php
 //
 
-#include "rtems_main.h"
-
 #include <stdio.h>
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>

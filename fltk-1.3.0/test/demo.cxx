@@ -395,7 +395,7 @@ int load_the_menu(const char* fname)
   return 1;
 }
 
-extern "C" int rtems_main(int argc, char **argv) {
+int main(int argc, char **argv) {
   putenv((char *)"FLTK_DOCDIR=../documentation/html");
   char buf[FL_PATH_MAX];
   strcpy(buf, argv[0]);
