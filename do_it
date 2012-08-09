@@ -217,6 +217,9 @@ fi
 j_jpeg()
 {
   cd ${LIBJPEG}
+  
+  make distclean
+  
   CFLAGS="${CPU_CFLAGS}" \
      ./configure --host=${TARGET} --prefix=${PREFIX} \
      --includedir=${PREFIX}/lib/include \
@@ -240,13 +243,17 @@ j_jpeg()
 
 if [ ${do_jpeg} = yes ] ; then
   echo "Building ${LIBJPEG} ..."
-  j_jpeg 
+  j_jpeg # >${LOGDIR}/${TARGET}-${LIBJPEG}.log 2>&1
 fi
 
 ######### Build and install PNG support
 j_png()
 {
   cd ${LIBPNG}
+  
+  make distclean 
+  
+  
   CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
      ./configure --host=${TARGET} --prefix=${PREFIX} \
      --includedir=${PREFIX}/lib/include \
@@ -270,13 +277,16 @@ j_png()
 
 if [ ${do_png} = yes ] ; then
   echo "Building ${LIBPNG} ..."
-  j_png 
+  j_png # >${LOGDIR}/${TARGET}-${LIBPNG}.log 2>&1
 fi
 
 ######### Build and install TIFF support
 j_tiff()
 {
   cd ${TIFFLIB}
+  
+  make distclean
+  
   CFLAGS="${CPU_CFLAGS}" \
      ./configure --host=${TARGET} --prefix=${PREFIX} \
      --includedir=${PREFIX}/lib/include \
@@ -299,13 +309,16 @@ j_tiff()
 
 if [ ${do_tiff} = yes ] ; then
   echo "Building ${TIFFLIB} ..."
-  j_tiff
+  j_tiff # >${LOGDIR}/${TARGET}-${TIFFLIB}.log 2>&1
 fi
 
 ######### Build and install Adobe Type 1 Font support
 j_t1()
 {
   cd ${T1LIB}
+  
+  make distclean
+  
   CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
      ./configure --host=${TARGET} --prefix=${PREFIX} \
      --includedir=${PREFIX}/lib/include \
@@ -314,7 +327,7 @@ j_t1()
      --without-athena --without-x
   check_status $? Could not configure ${T1LIB}
 
-  make
+  make without_doc
   check_status $? Could not make ${T1LIB}
 
   ${sudo_cmd}  make install
@@ -330,13 +343,16 @@ j_t1()
 
 if [ ${do_t1} = yes ] ; then
   echo "Building ${T1LIB}..."
-  j_t1 >${LOGDIR}/${TARGET}-${T1LIB}.log 2>&1
+  j_t1 # >${LOGDIR}/${TARGET}-${T1LIB}.log 2>&1
 fi
 
 ######### Build and install Truetype Font support
 j_ttf()
 {
   cd ${FREETYPE}
+  
+  make distclean
+  
   CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
      ./configure --host=${TARGET} --prefix=${PREFIX} \
      --includedir=${PREFIX}/lib/include \
@@ -359,7 +375,7 @@ j_ttf()
 
 if [ ${do_ttf} = yes ] ; then
   echo "Building ${FREETYPE} ..."
-  j_ttf #>${LOGDIR}/${TARGET}-${FREETYPE}.log 2>&1
+  j_ttf # >${LOGDIR}/${TARGET}-${FREETYPE}.log 2>&1
 fi
 
 ######### Build and install Nano-X support
@@ -369,8 +385,10 @@ j_nanox()
 
   # RTEMS_MAKEFILE_PATH inherited
   export RTEMS_MAKEFILE_PATH
+  
+  make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems clean 
 
-  make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems
+  make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems -k all
   check_status $? Could not make ${NANOX}
 
   ${sudo_cmd}  make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems install
@@ -386,7 +404,7 @@ j_nanox()
 
 if [ ${do_nanox} = yes ] ; then
   echo "Building ${NANOX} ..."
-  j_nanox #>${LOGDIR}/${TARGET}-${NANOX}.log 2>&1
+  j_nanox # >${LOGDIR}/${TARGET}-${NANOX}.log 2>&1
 fi
 
 
@@ -398,6 +416,8 @@ j_nxlib()
   # RTEMS_MAKEFILE_PATH inherited
   export RTEMS_MAKEFILE_PATH
 
+  make -f Makefile.rtems distclean
+
   make -f Makefile.rtems 
   check_status $? Could not make ${NXLIB}
 
@@ -405,7 +425,7 @@ j_nxlib()
   check_status $? Could not make install ${NXLIB}
 
   if [ ${do_clean} = yes ] ; then
-    make -f Makefile.rtems clean
+    make -f Makefile.rtems distclean
     check_status $? Could not make distclean ${NXLIB}
   fi
 
@@ -414,7 +434,7 @@ j_nxlib()
 
 if [ ${do_nxlib} = yes ] ; then
   echo "Building ${NXLIB} ..."
-  j_nxlib #>${LOGDIR}/${TARGET}-${NXLIB}.log 2>&1
+  j_nxlib # >${LOGDIR}/${TARGET}-${NXLIB}.log 2>&1
 fi
 
 
@@ -422,11 +442,16 @@ fi
 j_fltk()
 {
   cd ${FLTK}
+  
+  make distclean
+  
   CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
-     ./configure --host=${TARGET} --prefix=${PREFIX} \
-     --x-includes="${BSPTOP}/lib/include" --x-libraries="${BSPTOP}/lib" \
-     --disable-xft --disable-xinerama --disable-xdbe \
-     --disable-shared 
+   ./configure --host=${TARGET} --prefix=${PREFIX} \
+      --includedir="${BSPTOP}/lib/include"  --libdir="${BSPTOP}/lib"\
+      --x-includes="${BSPTOP}/lib/include" --x-libraries="${BSPTOP}/lib" \
+      --disable-xft --disable-xinerama --disable-xdbe \
+      --disable-shared --disable-gl 
+      
   check_status $? Could not configure ${FLTK}
 
   make -k
@@ -445,7 +470,6 @@ j_fltk()
 
 if [ ${do_fltk} = yes ] ; then
   echo "Building ${FLTK} ..."
-  echo "SKIPPING ${FLTK} ..."
   j_fltk # >${LOGDIR}/${TARGET}-${FLTK}.log 2>&1
 fi
 
