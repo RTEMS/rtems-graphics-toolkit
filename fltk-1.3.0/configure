@@ -6115,9 +6115,9 @@ fi
 syszlib_ok=no
 syszinc_ok=no
 if test x$enable_localzlib != xyes; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for gzgets in -lz" >&5
-$as_echo_n "checking for gzgets in -lz... " >&6; }
-if ${ac_cv_lib_z_gzgets+:} false; then :
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for z_gzgets in -lz" >&5
+$as_echo_n "checking for z_gzgets in -lz... " >&6; }
+if ${ac_cv_lib_z_z_gzgets+:} false; then :
   $as_echo_n "(cached) " >&6
 else
   ac_check_lib_save_LIBS=$LIBS
@@ -6131,27 +6131,27 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 #ifdef __cplusplus
 extern "C"
 #endif
-char gzgets ();
+char z_gzgets ();
 int
 main ()
 {
-return gzgets ();
+return z_gzgets ();
   ;
   return 0;
 }
 _ACEOF
 if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_z_gzgets=yes
+  ac_cv_lib_z_z_gzgets=yes
 else
-  ac_cv_lib_z_gzgets=no
+  ac_cv_lib_z_z_gzgets=no
 fi
 rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_z_gzgets" >&5
-$as_echo "$ac_cv_lib_z_gzgets" >&6; }
-if test "x$ac_cv_lib_z_gzgets" = xyes; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_z_z_gzgets" >&5
+$as_echo "$ac_cv_lib_z_z_gzgets" >&6; }
+if test "x$ac_cv_lib_z_z_gzgets" = xyes; then :
   ac_fn_c_check_header_mongrel "$LINENO" "zlib.h" "ac_cv_header_zlib_h" "$ac_includes_default"
 if test "x$ac_cv_header_zlib_h" = xyes; then :
   syszinc_ok=yes
@@ -7262,7 +7262,7 @@ fi
 $as_echo "$as_me: WARNING: Ignoring libraries \"$X_PRE_LIBS\" requested by configure." >&2;}
 	fi
 
-	LIBS="$LIBS -lNX11 -lnano-X -ltiff -lt1 -ljpeg $X_EXTRA_LIBS"
+	LIBS="$LIBS -lX11 -lnano-X -ltiff -lt1 $X_EXTRA_LIBS"
 	CFLAGS="$CFLAGS $X_CFLAGS"
 	CXXFLAGS="$CXXFLAGS $X_CFLAGS"
 	LDFLAGS="$X_LIBS $LDFLAGS"
