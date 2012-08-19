@@ -846,6 +846,8 @@ int T1_AddToFileSearchPath( int pathtype, int mode, char *pathname)
       T1_errno=T1ERR_ALLOC_MEM;
       return(-1);
     }
+    strcpy(newpath, pathname);
+
     /* Check for and handle the existing path configuration */
     if (pfab_no==0) {   /* do not free the default path but establish it
 			   as a regularly setup path, if database not empty! */
@@ -853,7 +855,7 @@ int T1_AddToFileSearchPath( int pathtype, int mode, char *pathname)
 	pfab_no++;
       }
       else {
-	free( T1_AFM_ptr[0]);
+	free( T1_PFAB_ptr[0]);
       }
     }
     if (pfab_no==-1) {  /* not initialized! */
@@ -884,6 +886,8 @@ int T1_AddToFileSearchPath( int pathtype, int mode, char *pathname)
       T1_errno=T1ERR_ALLOC_MEM;
       return(-1);
     }
+    strcpy(newpath, pathname);
+
     /* Check for and handle the existing path configuration */
     if (afm_no==0) {   /* do not free the default path but establish it
 			  as a regularly setup path, if database not empty! */
@@ -922,6 +926,8 @@ int T1_AddToFileSearchPath( int pathtype, int mode, char *pathname)
       T1_errno=T1ERR_ALLOC_MEM;
       return(-1);
     }
+    strcpy(newpath, pathname);
+
     /* Check for and handle the existing path configuration */
     if (enc_no==0) {    /* do not free the default path but establish it
 			   as a regularly setup path, if database not empty! */
