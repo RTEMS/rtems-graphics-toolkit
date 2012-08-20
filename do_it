@@ -429,7 +429,7 @@ j_nxlib()
     check_status $? Could not make distclean ${NXLIB}
   fi
 
-  cd ../..
+  cd ..
 }
 
 if [ ${do_nxlib} = yes ] ; then
