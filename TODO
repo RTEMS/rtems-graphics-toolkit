@@ -30,7 +30,4 @@ Nano-X
   more generic -- like weak symbols or something with default implementations
   on non-x86 architectures.
 
-FLTK
-====
-+ We will probably have to have a subset of X11R6 header files installed as well
-  as nxlib before this will work.
+  

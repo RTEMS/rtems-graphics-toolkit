@@ -16,18 +16,24 @@ RTEMS configuration should meet the following requirements:
 Additionally, your BSP should have a framebuffer and pointing device
 (e.g. mouse, touch screen, etc).  This is an area where RTEMS and
 this kit needs improvement on configuration but the basics are in place.
+Also, to work with current version of Microwindows/nano-X, 
+the framebuffer driver must be initialized in packed pixel mode
 
 The ./do_it script has the following parameters:
 
     do_one [options]
-      -A - build and install all libraries
-      -j - build JPEG support (default=no)
-      -p - build PNG support (default=no)
-      -t - build TIFF support (default=no)
-      -1 - build Adobe Type 1 font support (default=no)
-      -T - build Truetype font support (default=no)
-      -c - clean after building (default=no)
-      -v - verbose
+       -A - build and install all libraries
+       -j - build JPEG support (default=no)
+       -p - build PNG support (default=no)
+       -t - build TIFF support (default=no)
+       -1 - build Adobe Type 1 font support (default=no)
+       -T - build Truetype font support (default=no)
+       -n - build Microwindows/Nano-X support (default=no)
+       -x - build Microwindows/Nano-X NXLib support (default=no)
+       -f - build FLTK support (default=no)
+       -c - clean after building (default=no)
+       -s - use sudo for make install (default=no)
+       -v - verbose
 
     NOTES:
       + Use of each option toggles the setting.  For example, \"-v -v -A -1\"
@@ -46,12 +52,16 @@ RTEMS_MAKEFILE_PATH=${HOME}/rtems-4.10-work/bsp-install/i386-rtems4.10/pc386/ \
 The CFLAGS and target information are automatically gathered from the
 install Makefile information.  This is used to properly configure
 and install the desired graphics support libraries.
+This command also builds Microwin/Nano-X and NXLib which must be fetched from 
+external repository.
 
-After installing this, you can proceed to building Microwin/Nano-X.  It
-is expected that this will be integrated into a future revision of the
-Graphics Toolkit.  We hope to add other libraries like SVGAlib and
-FLTK in the future.  This is definitely an area in which users can 
-contribute.
+To be able tu build tests for FLTK package, users must not clean microwindows,
+as it uses for initializations the object files from the aformentioned package.
+
+After installing this, you can proceed to building Microwin/Nano-X. 
+It is expected that this will be integrated into a future revision of the
+Graphics Toolkit.  We hope to add other libraries like SVGAlib in the future.  
+This is definitely an area in which users can contribute.
 
 --joel
 
