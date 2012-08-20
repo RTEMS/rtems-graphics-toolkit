@@ -7262,7 +7262,7 @@ fi
 $as_echo "$as_me: WARNING: Ignoring libraries \"$X_PRE_LIBS\" requested by configure." >&2;}
 	fi
 
-	LIBS="$LIBS -lX11 -lnano-X -ltiff -lt1 $X_EXTRA_LIBS"
+	LIBS="$LIBS -lX11 -lnano-X -ltiff -lfreetype -lt1 $X_EXTRA_LIBS"
 	CFLAGS="$CFLAGS $X_CFLAGS"
 	CXXFLAGS="$CXXFLAGS $X_CFLAGS"
 	LDFLAGS="$X_LIBS $LDFLAGS"
