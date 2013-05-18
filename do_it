@@ -147,19 +147,36 @@ if [ X${RTEMS_MAKEFILE_PATH} = X ] ; then
   exit 1
 fi
 
-# XXX TBD check if enabled before checking if present?
-test -d ${LIBJPEG}
-check_status $? "${LIBJPEG} not present"
-test -d ${FREETYPE}
-check_status $? "${FREETYPE} not present"
-test -d ${LIBPNG}
-check_status $? "${LIBPNG} not present"
-test -d ${T1LIB}
-check_status $? "${T1LIB} not present"
-test -d ${TIFFLIB}
-check_status $? "${TIFFLIB} not present"
-test -d ${NANOX}
-check_status $? "${NANOX} not present"
+# Check if enabled before checking if present
+if [ ${do_jpeg} = "yes" ] ; then
+  test -d ${LIBJPEG}
+  check_status $? "${LIBJPEG} not present"
+fi
+
+if [ ${do_ttf} = "yes" ] ; then
+  test -d ${FREETYPE}
+  check_status $? "${FREETYPE} not present"
+fi
+
+if [ ${do_png} = "yes" ] ; then
+  test -d ${LIBPNG}
+  check_status $? "${LIBPNG} not present"
+fi
+
+if [ ${do_t1} = "yes" ] ; then
+  test -d ${T1LIB}
+  check_status $? "${T1LIB} not present"
+fi
+
+if [ ${do_tiff} = "yes" ] ; then
+  test -d ${TIFFLIB}
+  check_status $? "${TIFFLIB} not present"
+fi
+
+if [ ${do_nanox} = "yes" ] ; then
+  test -d ${NANOX}
+  check_status $? "${NANOX} not present"
+fi
 
 test -d ${RTEMS_MAKEFILE_PATH}
 check_status $? "${RTEMS_MAKEFILE_PATH} not present"
