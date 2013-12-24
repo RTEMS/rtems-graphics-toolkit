@@ -1,0 +1,6 @@
+[submodule "microwin"]
+	path = microwin
+	url = git://github.com/alex-sever-h/microwin.git
+[submodule "nxlib"]
+	path = nxlib
+	url = git://github.com/alex-sever-h/nxlib.git
