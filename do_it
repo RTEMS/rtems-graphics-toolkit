@@ -36,9 +36,14 @@ do_ttf="no"
 
 # Do we build Microwindows/Nano-X support?
 do_nanox="no"
+# Do we build Microwindows/Nano-X NXLib support?
+do_nxlib="no"
 
 # Do we build FLTK support?
-do_fltk="yes"
+do_fltk="no"
+
+# Do we need sudo to install?
+use_sudo="no"
 
 # Are we noisy when running?
 verbose="no"
@@ -55,8 +60,10 @@ do_it [options]
   -1 - build Adobe Type 1 font support (default=no)
   -T - build Truetype font support (default=no)
   -n - build Microwindows/Nano-X support (default=no)
+  -x - build Microwindows/Nano-X NXLib support (default=no)
   -f - build FLTK support (default=no)
   -c - clean after building (default=no)
+  -s - use sudo for make install (default=no)
   -v - verbose
 
 NOTES:
@@ -91,7 +98,7 @@ toggle()
   esac
 }
 
-while getopts Ajpt1Tnfcv OPT
+while getopts Ajpt1Tnxfcsv OPT
 do
     case "$OPT" in
       A) do_jpeg="yes"
@@ -100,6 +107,8 @@ do
          do_t1="yes"
          do_ttf="yes"
          do_nanox="yes"
+	 do_nxlib="yes"
+	 do_fltk="yes"
          ;;
       j) do_jpeg=`toggle ${do_jpeg}` ;;
       p) do_png=`toggle ${do_png}` ;;
@@ -107,8 +116,10 @@ do
       1) do_t1=`toggle ${do_t1}` ;;
       T) do_ttf=`toggle ${do_ttf}` ;;
       n) do_nanox=`toggle ${do_nanox}` ;;
+      x) do_nxlib=`toggle ${do_nxlib}` ;;
       f) do_fltk=`toggle ${do_fltk}` ;;
       c) do_clean=`toggle ${do_clean}` ;;
+      s) use_sudo=`toggle ${use_sudo}` ;;
       v) verbose=`toggle ${verbose}` ;;
       *) fatal;;
     esac
@@ -133,11 +144,21 @@ if [ ${verbose} = yes ] ; then
   echo "Build Microwindows/Nano-X       : " ${do_nanox}
   echo "Microwindows/Nano-X Source      : " ${NANOX}
   echo ""
+  echo "Build NXLib                     : " ${do_nxlib}
+  echo "NXLib Source                    : " ${NXLIB}
+  echo ""
   echo "Build FLTK                      : " ${do_fltk}
   echo "FLTK Source                     : " ${FLTK}
   echo ""
   echo "Clean after install             : " ${do_clean}
   echo ""
+fi
+
+
+if [ ${use_sudo} = yes ] ; then
+  sudo_cmd="sudo -E "
+else
+  sudo_cmd=""
 fi
 
 ######### START OF Consistency checks
@@ -211,6 +232,9 @@ fi
 j_jpeg()
 {
   cd ${LIBJPEG}
+  
+  make distclean
+  
   CFLAGS="${CPU_CFLAGS}" \
      ./configure --host=${TARGET} --prefix=${PREFIX} \
      --includedir=${PREFIX}/lib/include \
@@ -221,7 +245,7 @@ j_jpeg()
   make
   check_status $? Could not make ${LIBJPEG}
 
-  make install
+  ${sudo_cmd}  make install
   check_status $? Could not make install ${LIBJPEG}
 
   if [ ${do_clean} = yes ] ; then
@@ -234,13 +258,17 @@ j_jpeg()
 
 if [ ${do_jpeg} = yes ] ; then
   echo "Building ${LIBJPEG} ..."
-  j_jpeg >${LOGDIR}/${TARGET}-${LIBJPEG}.log 2>&1
+  j_jpeg # >${LOGDIR}/${TARGET}-${LIBJPEG}.log 2>&1
 fi
 
 ######### Build and install PNG support
 j_png()
 {
   cd ${LIBPNG}
+  
+  make distclean 
+  
+  
   CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
      ./configure --host=${TARGET} --prefix=${PREFIX} \
      --includedir=${PREFIX}/lib/include \
@@ -251,7 +279,7 @@ j_png()
   make
   check_status $? Could not make ${LIBPNG}
 
-  make install
+  ${sudo_cmd}  make install
   check_status $? Could not make install ${LIBPNG}
 
   if [ ${do_clean} = yes ] ; then
@@ -264,13 +292,16 @@ j_png()
 
 if [ ${do_png} = yes ] ; then
   echo "Building ${LIBPNG} ..."
-  j_png >${LOGDIR}/${TARGET}-${LIBPNG}.log 2>&1
+  j_png # >${LOGDIR}/${TARGET}-${LIBPNG}.log 2>&1
 fi
 
 ######### Build and install TIFF support
 j_tiff()
 {
   cd ${TIFFLIB}
+  
+  make distclean
+  
   CFLAGS="${CPU_CFLAGS}" \
      ./configure --host=${TARGET} --prefix=${PREFIX} \
      --includedir=${PREFIX}/lib/include \
@@ -280,7 +311,7 @@ j_tiff()
   make
   check_status $? Could not make ${TIFFLIB}
 
-  make install
+  ${sudo_cmd}  make install
   check_status $? Could not make install ${TIFFLIB}
 
   if [ ${do_clean} = yes ] ; then
@@ -293,13 +324,16 @@ j_tiff()
 
 if [ ${do_tiff} = yes ] ; then
   echo "Building ${TIFFLIB} ..."
-  j_tiff >${LOGDIR}/${TARGET}-${TIFFLIB}.log 2>&1
+  j_tiff # >${LOGDIR}/${TARGET}-${TIFFLIB}.log 2>&1
 fi
 
 ######### Build and install Adobe Type 1 Font support
 j_t1()
 {
   cd ${T1LIB}
+  
+  make distclean
+  
   CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
      ./configure --host=${TARGET} --prefix=${PREFIX} \
      --includedir=${PREFIX}/lib/include \
@@ -308,10 +342,10 @@ j_t1()
      --without-athena --without-x
   check_status $? Could not configure ${T1LIB}
 
-  make
+  make without_doc
   check_status $? Could not make ${T1LIB}
 
-  make install
+  ${sudo_cmd}  make install
   check_status $? Could not make install ${T1LIB}
 
   if [ ${do_clean} = yes ] ; then
@@ -324,13 +358,16 @@ j_t1()
 
 if [ ${do_t1} = yes ] ; then
   echo "Building ${T1LIB}..."
-  j_t1 >${LOGDIR}/${TARGET}-${T1LIB}.log 2>&1
+  j_t1 # >${LOGDIR}/${TARGET}-${T1LIB}.log 2>&1
 fi
 
 ######### Build and install Truetype Font support
 j_ttf()
 {
   cd ${FREETYPE}
+  
+  make distclean
+  
   CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
      ./configure --host=${TARGET} --prefix=${PREFIX} \
      --includedir=${PREFIX}/lib/include \
@@ -340,7 +377,7 @@ j_ttf()
   make
   check_status $? Could not make ${FREETYPE}
 
-  make install
+  ${sudo_cmd}  make install
   check_status $? Could not make install ${FREETYPE}
 
   if [ ${do_clean} = yes ] ; then
@@ -353,7 +390,7 @@ j_ttf()
 
 if [ ${do_ttf} = yes ] ; then
   echo "Building ${FREETYPE} ..."
-  j_ttf >${LOGDIR}/${TARGET}-${FREETYPE}.log 2>&1
+  j_ttf # >${LOGDIR}/${TARGET}-${FREETYPE}.log 2>&1
 fi
 
 ######### Build and install Nano-X support
@@ -363,11 +400,13 @@ j_nanox()
 
   # RTEMS_MAKEFILE_PATH inherited
   export RTEMS_MAKEFILE_PATH
+  
+  make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems clean 
 
-  make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems
+  make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems -k all
   check_status $? Could not make ${NANOX}
 
-  make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems install
+  ${sudo_cmd}  make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems install
   check_status $? Could not make install ${NANOX}
 
   if [ ${do_clean} = yes ] ; then
@@ -380,22 +419,60 @@ j_nanox()
 
 if [ ${do_nanox} = yes ] ; then
   echo "Building ${NANOX} ..."
-  j_nanox >${LOGDIR}/${TARGET}-${NANOX}.log 2>&1
+  j_nanox # >${LOGDIR}/${TARGET}-${NANOX}.log 2>&1
 fi
+
+
+######### Build and install NXLIB support
+j_nxlib()
+{
+  cd ${NXLIB}
+
+  # RTEMS_MAKEFILE_PATH inherited
+  export RTEMS_MAKEFILE_PATH
+
+  make -f Makefile.rtems distclean
+
+  make -f Makefile.rtems 
+  check_status $? Could not make ${NXLIB}
+
+  ${sudo_cmd}  make -f Makefile.rtems install
+  check_status $? Could not make install ${NXLIB}
+
+  if [ ${do_clean} = yes ] ; then
+    make -f Makefile.rtems distclean
+    check_status $? Could not make distclean ${NXLIB}
+  fi
+
+  cd ..
+}
+
+if [ ${do_nxlib} = yes ] ; then
+  echo "Building ${NXLIB} ..."
+  j_nxlib # >${LOGDIR}/${TARGET}-${NXLIB}.log 2>&1
+fi
+
 
 ######### Build and install FLTK support
 j_fltk()
 {
   cd ${FLTK}
+  
+  make distclean
+  
   CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
-     ./configure --host=${TARGET} --prefix=${PREFIX} \
-     --disable-shared 
+   ./configure --host=${TARGET} --prefix=${PREFIX} \
+      --includedir="${BSPTOP}/lib/include"  --libdir="${BSPTOP}/lib"\
+      --x-includes="${BSPTOP}/lib/include" --x-libraries="${BSPTOP}/lib" \
+      --disable-xft --disable-xinerama --disable-xdbe \
+      --disable-shared --disable-gl 
+      
   check_status $? Could not configure ${FLTK}
 
-  make
+  make -k
   check_status $? Could not make ${FLTK}
 
-  make install
+  ${sudo_cmd}  make install
   check_status $? Could not make install ${FLTK}
 
   if [ ${do_clean} = yes ] ; then
@@ -408,8 +485,7 @@ j_fltk()
 
 if [ ${do_fltk} = yes ] ; then
   echo "Building ${FLTK} ..."
-  echo "SKIPPING ${FLTK} ..."
-  # j_fltk >${LOGDIR}/${TARGET}-${FLTK}.log 2>&1
+  j_fltk # >${LOGDIR}/${TARGET}-${FLTK}.log 2>&1
 fi
 
 exit 0

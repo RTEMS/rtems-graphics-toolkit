@@ -2,10 +2,11 @@
 #  VERSION Information for the various libraries
 #
 
-LIBJPEG=jpeg-7
-FREETYPE=freetype-2.3.11
-LIBPNG=libpng-1.5.11
+LIBJPEG=jpeg-8d
+FREETYPE=freetype-2.4.10
+LIBPNG=libpng-1.5.12
 T1LIB=t1lib-5.1.2
-TIFFLIB=tiff-3.9.2
+TIFFLIB=tiff-4.0.2
 NANOX=microwin
-FLTK=fltk-1.1.10
+NXLIB=nxlib
+FLTK=fltk-1.3.0
