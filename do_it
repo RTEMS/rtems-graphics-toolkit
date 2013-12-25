@@ -226,17 +226,27 @@ LOGDIR=${BASEDIR}/log
 if [ ! -d ${LOGDIR} ] ; then
   mkdir ${LOGDIR}
 fi
-######### 
+#########
+
+######### Build Directory
+BUILDDIR=${BASEDIR}/build
+if [ ! -d ${BUILDDIR} ] ; then
+  mkdir ${BUILDDIR}
+fi
+#########
 
 ######### Build and install JPEG
 j_jpeg()
 {
-  cd ${LIBJPEG}
-  
+  if [ ! -d ${BUILDDIR}/${LIBJPEG} ] ; then
+    mkdir ${BUILDDIR}/${LIBJPEG}
+  fi
+  cd ${BUILDDIR}/${LIBJPEG}
+
   make distclean
-  
+
   CFLAGS="${CPU_CFLAGS}" \
-     ./configure --host=${TARGET} --prefix=${PREFIX} \
+     ../../${LIBJPEG}/configure --host=${TARGET} --prefix=${PREFIX} \
      --includedir=${PREFIX}/lib/include \
      --disable-shared \
      --disable-programs
@@ -253,7 +263,7 @@ j_jpeg()
     check_status $? Could not make distclean ${LIBJPEG}
   fi
 
-  cd ..
+  cd ../..
 }
 
 if [ ${do_jpeg} = yes ] ; then
@@ -264,13 +274,15 @@ fi
 ######### Build and install PNG support
 j_png()
 {
-  cd ${LIBPNG}
-  
+  if [ ! -d ${BUILDDIR}/${LIBPNG} ] ; then
+    mkdir ${BUILDDIR}/${LIBPNG}
+  fi
+  cd ${BUILDDIR}/${LIBPNG}
+
   make distclean 
-  
-  
+
   CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
-     ./configure --host=${TARGET} --prefix=${PREFIX} \
+     ../../${LIBPNG}/configure --host=${TARGET} --prefix=${PREFIX} \
      --includedir=${PREFIX}/lib/include \
      --libdir=${PREFIX}/lib \
      --disable-shared
@@ -287,7 +299,7 @@ j_png()
     check_status $? Could not make distclean ${LIBPNG}
   fi
 
-  cd ..
+  cd ../..
 }
 
 if [ ${do_png} = yes ] ; then
@@ -298,12 +310,15 @@ fi
 ######### Build and install TIFF support
 j_tiff()
 {
-  cd ${TIFFLIB}
-  
+  if [ ! -d ${BUILDDIR}/${TIFFLIB} ] ; then
+    mkdir ${BUILDDIR}/${TIFFLIB}
+  fi
+  cd ${BUILDDIR}/${TIFFLIB}
+
   make distclean
-  
+
   CFLAGS="${CPU_CFLAGS}" \
-     ./configure --host=${TARGET} --prefix=${PREFIX} \
+     ../../${TIFFLIB}/configure --host=${TARGET} --prefix=${PREFIX} \
      --includedir=${PREFIX}/lib/include \
      --disable-shared
   check_status $? Could not configure ${TIFFLIB}
@@ -319,7 +334,7 @@ j_tiff()
     check_status $? Could not make distclean ${TIFFLIB}
   fi
 
-  cd ..
+  cd ../..
 }
 
 if [ ${do_tiff} = yes ] ; then
@@ -330,10 +345,11 @@ fi
 ######### Build and install Adobe Type 1 Font support
 j_t1()
 {
+#TODO: Build in ${BUILDDIR}
   cd ${T1LIB}
-  
+
   make distclean
-  
+
   CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
      ./configure --host=${TARGET} --prefix=${PREFIX} \
      --includedir=${PREFIX}/lib/include \
@@ -364,12 +380,15 @@ fi
 ######### Build and install Truetype Font support
 j_ttf()
 {
-  cd ${FREETYPE}
-  
+  if [ ! -d ${BUILDDIR}/${FREETYPE} ] ; then
+    mkdir ${BUILDDIR}/${FREETYPE}
+  fi
+  cd ${BUILDDIR}/${FREETYPE}
+
   make distclean
-  
+
   CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
-     ./configure --host=${TARGET} --prefix=${PREFIX} \
+     ../../${FREETYPE}/configure --host=${TARGET} --prefix=${PREFIX} \
      --includedir=${PREFIX}/lib/include \
      --disable-shared 
   check_status $? Could not configure ${FREETYPE}
@@ -385,7 +404,7 @@ j_ttf()
     check_status $? Could not make distclean ${FREETYPE}
   fi
 
-  cd ..
+  cd ../..
 }
 
 if [ ${do_ttf} = yes ] ; then
@@ -396,6 +415,7 @@ fi
 ######### Build and install Nano-X support
 j_nanox()
 {
+#TODO: Build in ${BUILDDIR}
   cd ${NANOX}/src
 
   # RTEMS_MAKEFILE_PATH inherited
@@ -426,6 +446,7 @@ fi
 ######### Build and install NXLIB support
 j_nxlib()
 {
+#TODO: Build in ${BUILDDIR}
   cd ${NXLIB}
 
   # RTEMS_MAKEFILE_PATH inherited
@@ -457,9 +478,9 @@ fi
 j_fltk()
 {
   cd ${FLTK}
-  
+
   make distclean
-  
+
   CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
    ./configure --host=${TARGET} --prefix=${PREFIX} \
       --includedir="${BSPTOP}/lib/include"  --libdir="${BSPTOP}/lib"\
