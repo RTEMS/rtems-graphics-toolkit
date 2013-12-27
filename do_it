@@ -345,13 +345,17 @@ fi
 ######### Build and install Adobe Type 1 Font support
 j_t1()
 {
-#TODO: Build in ${BUILDDIR}
-  cd ${T1LIB}
+  if [ ! -d ${BUILDDIR}/${T1LIB} ] ; then
+    mkdir ${BUILDDIR}/${T1LIB}
+  else
+    rm -r ${BUILDDIR}/${T1LIB}
+    mkdir ${BUILDDIR}/${T1LIB}
+  fi
+  cd ${BUILDDIR}/${T1LIB}
 
-  make distclean
-
+  cp -r ../../${T1LIB}/* .
   CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
-     ./configure --host=${TARGET} --prefix=${PREFIX} \
+     ../../${T1LIB}/configure --host=${TARGET} --prefix=${PREFIX} \
      --includedir=${PREFIX}/lib/include \
      --datadir=${PREFIX}/share \
      --disable-shared \
@@ -369,7 +373,7 @@ j_t1()
     check_status $? Could not make distclean ${T1LIB}
   fi
 
-  cd ..
+  cd ../..
 }
 
 if [ ${do_t1} = yes ] ; then
@@ -415,13 +419,18 @@ fi
 ######### Build and install Nano-X support
 j_nanox()
 {
-#TODO: Build in ${BUILDDIR}
-  cd ${NANOX}/src
+  if [ ! -d ${BUILDDIR}/${NANOX} ] ; then
+    mkdir ${BUILDDIR}/${NANOX}
+  else
+    rm -r ${BUILDDIR}/${NANOX}
+    mkdir ${BUILDDIR}/${NANOX}
+  fi
+  cd ${BUILDDIR}/${NANOX}
+
+  cp -r ../../${NANOX}/src/* .
 
   # RTEMS_MAKEFILE_PATH inherited
   export RTEMS_MAKEFILE_PATH
-  
-  make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems clean 
 
   make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems -k all
   check_status $? Could not make ${NANOX}
@@ -446,8 +455,15 @@ fi
 ######### Build and install NXLIB support
 j_nxlib()
 {
-#TODO: Build in ${BUILDDIR}
-  cd ${NXLIB}
+  if [ ! -d ${BUILDDIR}/${NXLIB} ] ; then
+    mkdir ${BUILDDIR}/${NXLIB}
+  else
+    rm -r ${BUILDDIR}/${NXLIB}
+    mkdir ${BUILDDIR}/${NXLIB}
+  fi
+  cd ${BUILDDIR}/${NXLIB}
+
+  cp -r ../../${NXLIB}/* .
 
   # RTEMS_MAKEFILE_PATH inherited
   export RTEMS_MAKEFILE_PATH
@@ -465,7 +481,7 @@ j_nxlib()
     check_status $? Could not make distclean ${NXLIB}
   fi
 
-  cd ..
+  cd ../..
 }
 
 if [ ${do_nxlib} = yes ] ; then
