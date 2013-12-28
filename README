@@ -21,23 +21,25 @@ the framebuffer driver must be initialized in packed pixel mode
 
 The ./do_it script has the following parameters:
 
-    do_one [options]
-       -A - build and install all libraries
-       -j - build JPEG support (default=no)
-       -p - build PNG support (default=no)
-       -t - build TIFF support (default=no)
-       -1 - build Adobe Type 1 font support (default=no)
-       -T - build Truetype font support (default=no)
-       -n - build Microwindows/Nano-X support (default=no)
-       -x - build Microwindows/Nano-X NXLib support (default=no)
-       -f - build FLTK support (default=no)
-       -c - clean after building (default=no)
-       -s - use sudo for make install (default=no)
-       -v - verbose
+    do_it [options]
+      -A - build and install all libraries
+      -a - build all libraries
+      -j - build JPEG support (default=no)
+      -p - build PNG support (default=no)
+      -t - build TIFF support (default=no)
+      -1 - build Adobe Type 1 font support (default=no)
+      -T - build Truetype font support (default=no)
+      -n - build Microwindows/Nano-X support (default=no)
+      -x - build Microwindows/Nano-X NXLib support (default=no)
+      -f - build FLTK support (default=no)
+      -c - clean after building (default=no)
+      -b - build only, do not install libraries (default=no)
+      -s - use sudo for make install (default=no)
+      -v - verbose
 
     NOTES:
       + Use of each option toggles the setting.  For example, \"-v -v -A -1\"
-        results in verbose=no and all steps done except Type 1 fonts.
+        results in verbose=no and all steps done except Type 1 fonts and build only.
       + RTEMS_MAKEFILE_PATH must be set
       + By default, nothing is built.
 
@@ -73,4 +75,31 @@ Adobe Type 1 Library
   Then we need to put some T1 fonts in the rootfs filesystem.
   This works now by setting the environment variable.  See rtems_init.c
   in the microwin source.
+
+FLTK
+====
+* As of December 2013, fltk does not build.
+  TODO: Fix the build / re-port fltk
+  Note: Upstream has switched to cmake while this is still using the old
+  autoconf system
+
+Libraries used:
+===============
+
+libjpeg      - (v8d)    http://www.ijg.org/
+libtiff      - (v4.0.2) http://www.libtiff.org/
+libpng       - (1.5.12) http://www.libpng.org/pub/png/libpng.html
+libfreetype  - (2.4.10) http://freetype.sourceforge.net/index2.html
+libt1        - (5.1.2)  http://www.t1lib.org/
+svgalib      - (1.4.3)  http://svgalib.org/
+fltk         - (1.3.0)  http://www.fltk.org
+
+Microwindows/Nano-X
+Upstream:
+    git://microwindows.org/microwin
+    git clone git://microwindows.org/nxlib
+
+Forked for RTEMS at:
+    git://github.com/alex-sever-h/microwin.git
+    git://github.com/alex-sever-h/nxlib.git
 

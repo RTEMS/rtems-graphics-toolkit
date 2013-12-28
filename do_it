@@ -68,7 +68,7 @@ do_it [options]
 
 NOTES:
   + Use of each option toggles the setting.  For example, \"-v -v -A -1\"
-    results in verbose=no and all steps done except Type 1 fonts.
+    results in verbose=no and all steps done except Type 1 fonts and build only.
   + RTEMS_MAKEFILE_PATH must be set.
   + By default, nothing is built.
 EOF
