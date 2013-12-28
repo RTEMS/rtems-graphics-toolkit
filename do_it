@@ -45,6 +45,9 @@ use_sudo="no"
 
 # Are we noisy when running?
 verbose="no"
+
+# Do we install what we built?
+do_install=true
 ######################## Parse arguments ###########################
 
 usage()
@@ -52,6 +55,7 @@ usage()
 cat <<EOF
 do_it [options]
   -A - build and install all libraries
+  -a - build all libraries
   -j - build JPEG support (default=no)
   -p - build PNG support (default=no)
   -t - build TIFF support (default=no)
@@ -61,6 +65,7 @@ do_it [options]
   -x - build Microwindows/Nano-X NXLib support (default=no)
   -f - build FLTK support (default=no)
   -c - clean after building (default=no)
+  -b - build only, do not install libraries (default=no)
   -s - use sudo for make install (default=no)
   -v - verbose
 
@@ -96,7 +101,7 @@ toggle()
   esac
 }
 
-while getopts Ajpt1Tnxfcsv OPT
+while getopts Aajpt1Tnxfbcsv OPT
 do
     case "$OPT" in
       A) do_jpeg="yes"
@@ -105,8 +110,18 @@ do
          do_t1="yes"
          do_ttf="yes"
          do_nanox="yes"
-	 do_nxlib="yes"
-	 do_fltk="yes"
+         do_nxlib="yes"
+         do_fltk="yes"
+         ;;
+      a) do_jpeg="yes"
+         do_png="yes"
+         do_tiff="yes"
+         do_t1="yes"
+         do_ttf="yes"
+         do_nanox="yes"
+         do_nxlib="yes"
+         do_fltk="yes"
+         do_install=false
          ;;
       j) do_jpeg=`toggle ${do_jpeg}` ;;
       p) do_png=`toggle ${do_png}` ;;
@@ -116,6 +131,7 @@ do
       n) do_nanox=`toggle ${do_nanox}` ;;
       x) do_nxlib=`toggle ${do_nxlib}` ;;
       f) do_fltk=`toggle ${do_fltk}` ;;
+      b) do_install=false ;;
       c) do_clean=`toggle ${do_clean}` ;;
       s) use_sudo=`toggle ${use_sudo}` ;;
       v) verbose=`toggle ${verbose}` ;;
@@ -149,6 +165,7 @@ if [ ${verbose} = yes ] ; then
   echo "FLTK Source                     : " ${FLTK}
   echo ""
   echo "Clean after install             : " ${do_clean}
+  echo "Install                         : " ${do_install}
   echo ""
 fi
 
@@ -210,7 +227,7 @@ check_status $? Could not generate RTEMS_SETTINGS
 
 PREFIX=${BSPTOP}
 
-if [ ${verbose} = yes ] ; then
+if [ ${verbose} = yes ] && $do_install ; then
   echo "USING ${PREFIX} for install point!!!"
 fi
 
@@ -253,8 +270,10 @@ j_jpeg()
   make
   check_status $? Could not make ${LIBJPEG}
 
-  ${sudo_cmd}  make install
-  check_status $? Could not make install ${LIBJPEG}
+  if ${do_install} ; then
+    ${sudo_cmd}  make install
+    check_status $? Could not make install ${LIBJPEG}
+  fi
 
   if [ ${do_clean} = yes ] ; then
     make distclean
@@ -289,8 +308,10 @@ j_png()
   make
   check_status $? Could not make ${LIBPNG}
 
-  ${sudo_cmd}  make install
-  check_status $? Could not make install ${LIBPNG}
+  if ${do_install} ; then
+    ${sudo_cmd}  make install
+    check_status $? Could not make install ${LIBPNG}
+  fi
 
   if [ ${do_clean} = yes ] ; then
     make distclean
@@ -324,8 +345,10 @@ j_tiff()
   make
   check_status $? Could not make ${TIFFLIB}
 
-  ${sudo_cmd}  make install
-  check_status $? Could not make install ${TIFFLIB}
+  if ${do_install} ; then
+    ${sudo_cmd}  make install
+    check_status $? Could not make install ${TIFFLIB}
+  fi
 
   if [ ${do_clean} = yes ] ; then
     make distclean
@@ -363,8 +386,10 @@ j_t1()
   make without_doc
   check_status $? Could not make ${T1LIB}
 
-  ${sudo_cmd}  make install
-  check_status $? Could not make install ${T1LIB}
+  if ${do_install} ; then
+    ${sudo_cmd}  make install
+    check_status $? Could not make install ${T1LIB}
+  fi
 
   if [ ${do_clean} = yes ] ; then
     make distclean
@@ -398,8 +423,10 @@ j_ttf()
   make
   check_status $? Could not make ${FREETYPE}
 
-  ${sudo_cmd}  make install
-  check_status $? Could not make install ${FREETYPE}
+  if ${do_install} ; then
+    ${sudo_cmd}  make install
+    check_status $? Could not make install ${FREETYPE}
+  fi
 
   if [ ${do_clean} = yes ] ; then
     make distclean
@@ -433,8 +460,10 @@ j_nanox()
   make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems -k all
   check_status $? Could not make ${NANOX}
 
-  ${sudo_cmd}  make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems install
-  check_status $? Could not make install ${NANOX}
+  if ${do_install} ; then
+    ${sudo_cmd}  make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems install
+    check_status $? Could not make install ${NANOX}
+  fi
 
   if [ ${do_clean} = yes ] ; then
     make -f Makefile.rtems CONFIG=`pwd`/Configs/config.rtems clean
@@ -471,8 +500,10 @@ j_nxlib()
   make -f Makefile.rtems 
   check_status $? Could not make ${NXLIB}
 
-  ${sudo_cmd}  make -f Makefile.rtems install
-  check_status $? Could not make install ${NXLIB}
+  if ${do_install} ; then
+    ${sudo_cmd}  make -f Makefile.rtems install
+    check_status $? Could not make install ${NXLIB}
+  fi
 
   if [ ${do_clean} = yes ] ; then
     make -f Makefile.rtems distclean
@@ -515,8 +546,10 @@ j_fltk()
   make -k
   check_status $? Could not make ${FLTK}
 
-  ${sudo_cmd}  make install
-  check_status $? Could not make install ${FLTK}
+  if ${do_install} ; then
+    ${sudo_cmd}  make install
+    check_status $? Could not make install ${FLTK}
+  fi
 
   if [ ${do_clean} = yes ] ; then
     make distclean
