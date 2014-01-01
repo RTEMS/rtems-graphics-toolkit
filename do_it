@@ -419,15 +419,15 @@ fi
 ######### Build and install Nano-X support
 j_nanox()
 {
-  if [ ! -d ${BUILDDIR}/${NANOX} ] ; then
-    mkdir ${BUILDDIR}/${NANOX}
+  if [ ! -d ${BUILDDIR}/${NANOX}/src ] ; then
+    mkdir ${BUILDDIR}/${NANOX}/src
   else
-    rm -r ${BUILDDIR}/${NANOX}
-    mkdir ${BUILDDIR}/${NANOX}
+    rm -r ${BUILDDIR}/${NANOX}/src
+    mkdir ${BUILDDIR}/${NANOX}/src
   fi
-  cd ${BUILDDIR}/${NANOX}
+  cd ${BUILDDIR}/${NANOX}/src
 
-  cp -r ../../${NANOX}/src/* .
+  cp -r ../../../${NANOX}/src/* .
 
   # RTEMS_MAKEFILE_PATH inherited
   export RTEMS_MAKEFILE_PATH
@@ -443,7 +443,7 @@ j_nanox()
     check_status $? Could not make distclean ${NANOX}
   fi
 
-  cd ../..
+  cd ../../..
 }
 
 if [ ${do_nanox} = yes ] ; then
@@ -493,12 +493,20 @@ fi
 ######### Build and install FLTK support
 j_fltk()
 {
-  cd ${FLTK}
+  if [ ! -d ${BUILDDIR}/${FLTK} ] ; then
+    mkdir ${BUILDDIR}/${FLTK}
+  else
+    rm -r ${BUILDDIR}/${FLTK}
+    mkdir ${BUILDDIR}/${FLTK}
+  fi
+  cd ${BUILDDIR}/${FLTK}
+
+  cp -r ../../${FLTK}/* .
 
   make distclean
 
   CFLAGS="${BSP_CFLAGS} ${CPU_CFLAGS}" \
-   ./configure --host=${TARGET} --prefix=${PREFIX} \
+   ../../${FLTK}/configure --host=${TARGET} --prefix=${PREFIX} \
       --includedir="${BSPTOP}/lib/include"  --libdir="${BSPTOP}/lib"\
       --x-includes="${BSPTOP}/lib/include" --x-libraries="${BSPTOP}/lib" \
       --disable-xft --disable-xinerama --disable-xdbe \
