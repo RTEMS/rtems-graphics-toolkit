@@ -19,6 +19,12 @@ this kit needs improvement on configuration but the basics are in place.
 Also, to work with current version of Microwindows/nano-X, 
 the framebuffer driver must be initialized in packed pixel mode
 
+Populate the git submodules:
+    $ git submodule init
+    $ git submodule update
+
+This will fetch the microwin and nxlib repositories
+
 The ./do_it script has the following parameters:
 
     do_it [options]
