@@ -1,0 +1,23 @@
+From b7660cc834efdfde8d4e3fbf032030de07f864b4 Mon Sep 17 00:00:00 2001
+From: Chirayu Desai <cdesai@cyanogenmod.org>
+Date: Wed, 25 Dec 2013 22:18:26 +0530
+Subject: [PATCH] add a gitignore
+
+---
+ .gitignore | 4 ++++
+ 1 file changed, 4 insertions(+)
+ create mode 100644 .gitignore
+
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000000..27e5525e93
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,4 @@
++*~
++*.o
++*.a
++keysymstr.h
+-- 
+1.8.5.2
+

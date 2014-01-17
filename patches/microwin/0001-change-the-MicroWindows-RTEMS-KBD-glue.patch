@@ -1,0 +1,40 @@
+From 6b5dae5cdbc334ac1c3210bc2c4918668cb42aa4 Mon Sep 17 00:00:00 2001
+From: Pavel Pisa <ppisa4lists@pikron.com>
+Date: Wed, 20 Mar 2013 05:48:56 -0500
+Subject: [PATCH 1/2] change the MicroWindows RTEMS KBD glue
+
+according to microwin/kbd_ttyscan.c
+---
+ src/drivers/kbd_rtems.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/drivers/kbd_rtems.c b/src/drivers/kbd_rtems.c
+index 8f9697f63f..d868932b13 100644
+--- a/src/drivers/kbd_rtems.c
++++ b/src/drivers/kbd_rtems.c
+@@ -30,9 +30,12 @@
+ #include <fcntl.h>
+ #include <sys/ioctl.h>
+ #include <errno.h>
++#include <string.h>
+ 
+ #include <rtems/mw_uid.h>
++#include <rtems/keyboard.h>
+ #include "device.h"
++#include "keymap_standard.h"
+ 
+ extern int close (int fd); /* RTEMS does not include close() in stdio.h */
+ 
+@@ -45,6 +48,9 @@ void    MWKbd_Close (void);
+ void	MWKbd_GetModifierInfo (MWKEYMOD *modifiers, MWKEYMOD *curmodifiers);
+ int	MWKbd_Read (MWKEY *buf, MWKEYMOD *modifiers, MWSCANCODE *scancode);
+ 
++static MWKEY TranslateScancode(int scancode, MWKEYMOD modstate);
++static void LoadKernelKeymaps(int fd);
++
+ KBDDEVICE kbddev = {
+         MWKbd_Open,
+ 	MWKbd_Close,
+-- 
+1.8.5.2
+
