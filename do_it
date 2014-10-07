@@ -1,4 +1,4 @@
-#! /bin/bash 
+#! /bin/sh 
 #
 #  Script to help build RTEMS Graphics Toolkit
 #
@@ -11,7 +11,7 @@ if [ ! -r ${vfile} ] ; then
   exit 1
 fi
 
-./${vfile}
+. ./${vfile}
 
 if [ X${LIBJPEG} = X ] ; then
   echo VERSION FILE NOT CORRECT
