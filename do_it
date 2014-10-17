@@ -418,10 +418,10 @@ fi
 j_nanox()
 {
   if [ ! -d ${BUILDDIR}/${NANOX}/src ] ; then
-    mkdir ${BUILDDIR}/${NANOX}/src
+    mkdir -p ${BUILDDIR}/${NANOX}/src
   else
     rm -r ${BUILDDIR}/${NANOX}/src
-    mkdir ${BUILDDIR}/${NANOX}/src
+    mkdir -p ${BUILDDIR}/${NANOX}/src
   fi
   cd ${BUILDDIR}/${NANOX}/src
 
